@@ -5,6 +5,14 @@
   "main": "./build/lib/metrics/index.js",
   "typings": "./build/lib/metrics/index.d.ts",
   "scripts": {
+    "build": "npm run clean && npm run lint && npm run compile && npm run compodoc",
+    "clean": "rimraf build coverage docs",
+    "compile": "tsc -p .",
+    "compodoc": "compodoc lib -p tsconfig.json --output docs --disableGraph --unitTestCoverage ./coverage/coverage-summary.json",
+    "deps": "npm-check --ignore @types/* --no-spinner --no-emoji --no-color",
+    "lint": "tslint -c tslint.json lib/**/*.ts test/**/*.ts",
+    "prepublishDocs": "npm run compodoc",
+    "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,6 +27,15 @@
   "dependencies": {
     "amqp-ts": "^1.4.0",
     "inspector-metrics": "^1.17.3",
+    "rimraf": "^2.6.3",
+    "source-map-support": "^0.5.10"
+  },
+  "devDependencies": {
+    "@compodoc/compodoc": "^1.1.8",
+    "@types/node": "^11.9.3",
+    "compodoc": "0.0.41",
+    "npm-check": "^5.9.0",
+    "tslint": "^5.12.1",
     "typescript": "^3.3.3"
   },
   "peerDependencies": {

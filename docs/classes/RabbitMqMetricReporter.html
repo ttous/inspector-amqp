@@ -1,0 +1,1738 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>inspector-rabbitmq documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	    <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">inspector-rabbitmq documentation</a>
+            <button type="button" class="btn btn-default btn-menu fa fa-bars" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+            <div id="book-search-input" role="search">
+                <input type="text" placeholder="Type to search">
+            </div>
+            <nav>
+            
+                <ul class="list">
+            
+                    <li class="title">
+                        <a href="../">inspector-rabbitmq documentation</a>
+                    </li>
+            
+                    <li class="divider"></li>
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../"><span class="fa fa-home"></span>Getting started</a>
+                        <ul class="links">
+                                <li class="link">
+                                    <a href="../" ><span class="fa fa-file-text-o"></span>README</a>
+                                </li>
+                                <li class="link">
+                                    <a 
+                                        
+                                         href="../overview.html" 
+                                         href="../overview.html" 
+                                        >
+                                        <span class="fa fa-th"></span>Overview
+                                    </a>
+                                </li>
+                        </ul>
+                    </li>
+            
+            
+            
+            
+                    <li class="chapter">
+                        <div class="simple">
+                            <span class="fa fa-file-code-o"></span>
+                            <span>Classes</span>
+                            <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                    data-target="#xs-classes-links"
+                                ></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-classes-links"
+                            >
+                                <li class="link">
+                                    <a href="../classes/RabbitMqMetricReporter.html"  class="active" >RabbitMqMetricReporter</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+            
+            
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                    </li>
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
+                    </li>
+            
+                    <li class="divider"></li>
+                    <li class="copyright">
+                            Documentation generated using <a href="https://compodoc.github.io/compodoc/" target="_blank">
+                                        <img src="..//images/compodoc-vectorise.svg" class="img-responsive">
+                            </a>
+                    </li>
+            
+                </ul>
+            
+            </nav>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <nav>
+                   
+                       <ul class="list">
+                   
+                           <li class="title">
+                               <a href="../">inspector-rabbitmq documentation</a>
+                           </li>
+                   
+                           <li class="divider"></li>
+                   
+                               <div id="book-search-input" role="search">
+                                   <input type="text" placeholder="Type to search">
+                               </div>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../"><span class="fa fa-home"></span>Getting started</a>
+                               <ul class="links">
+                                       <li class="link">
+                                           <a href="../" ><span class="fa fa-file-text-o"></span>README</a>
+                                       </li>
+                                       <li class="link">
+                                           <a 
+                                               
+                                                href="../overview.html" 
+                                                href="../overview.html" 
+                                               >
+                                               <span class="fa fa-th"></span>Overview
+                                           </a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                   
+                   
+                   
+                           <li class="chapter">
+                               <div class="simple">
+                                   <span class="fa fa-file-code-o"></span>
+                                   <span>Classes</span>
+                                   <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                           data-target="#classes-links"
+                   ></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="classes-links"
+                   >
+                                       <li class="link">
+                                           <a href="../classes/RabbitMqMetricReporter.html"  class="active" >RabbitMqMetricReporter</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                   
+                   
+                   
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                           </li>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
+                           </li>
+                   
+                           <li class="divider"></li>
+                           <li class="copyright">
+                                   Documentation generated using <a href="https://compodoc.github.io/compodoc/" target="_blank">
+                                               <img src="..//images/compodoc-vectorise.svg" class="img-responsive">
+                                   </a>
+                           </li>
+                   
+                       </ul>
+                   
+                   </nav>
+               </div>
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Classes</li>
+  <li>RabbitMqMetricReporter</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+    <li class="active">
+        <a href="#infos" id="infos-tab" role="tab" data-toggle="tab">Infos</a>
+    </li>
+    <li>
+        <a href="#source" role="tab" id="source-tab" data-toggle="tab">Source</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="infos">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>lib/metrics/RabbitMqMetricReporter.ts</code>
+        </p>
+
+
+            <section>
+                <h3 id="constructor">Constructor</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <code>constructor(undefined: { connection: string; exchangeName: string; queueName: string; log?: Logger; reportInterval?: num...)</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Creates an instance of RabbitMqMetricReporter.</p>
+            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </section>
+
+            <section>
+                <h3 id="methods">Methods</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> getMonotoneCounterValues</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play circle">
+                                            <span class="fa fa-circle"></span>
+                                        </span>
+                                    <code>getMonotoneCounterValues(counter: MonotoneCounter)</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Gets the values for the specified monotone counter metric.</p>
+            </div>
+                                        <div class="io-description">
+                                                <b>Parameters :</b>
+                                                <ul class="jsdoc-params">
+                                                        <li>
+                                                            <div>
+                                                                <b>counter</b>
+                                                                    :     <code>MonotoneCounter</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                </ul>
+                                        </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>{}</code>
+            
+                                        </div>
+                                            <div class="io-description">
+                                                <p>* </p>
+            
+                                            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> getCounterValues</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play circle">
+                                            <span class="fa fa-circle"></span>
+                                        </span>
+                                    <code>getCounterValues(counter: Counter)</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Gets the values for the specified counter metric.</p>
+            </div>
+                                        <div class="io-description">
+                                                <b>Parameters :</b>
+                                                <ul class="jsdoc-params">
+                                                        <li>
+                                                            <div>
+                                                                <b>counter</b>
+                                                                    :     <code>Counter</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                </ul>
+                                        </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>{}</code>
+            
+                                        </div>
+                                            <div class="io-description">
+                                                <p>* </p>
+            
+                                            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> getGaugeValue</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play circle">
+                                            <span class="fa fa-circle"></span>
+                                        </span>
+                                    <code>getGaugeValue(gauge: Gauge<any>)</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Gets the values for the specified {Gauge} metric.</p>
+            </div>
+                                        <div class="io-description">
+                                                <b>Parameters :</b>
+                                                <ul class="jsdoc-params">
+                                                        <li>
+                                                            <div>
+                                                                <b>gauge</b>
+                                                                    :     <code>Gauge</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                </ul>
+                                        </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>{}</code>
+            
+                                        </div>
+                                            <div class="io-description">
+                                                <p>* </p>
+            
+                                            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> getHistogramValues</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play circle">
+                                            <span class="fa fa-circle"></span>
+                                        </span>
+                                    <code>getHistogramValues(histogram: Histogram)</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Gets the values for the specified {Histogram} metric.</p>
+            </div>
+                                        <div class="io-description">
+                                                <b>Parameters :</b>
+                                                <ul class="jsdoc-params">
+                                                        <li>
+                                                            <div>
+                                                                <b>histogram</b>
+                                                                    :     <code>Histogram</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                </ul>
+                                        </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>{}</code>
+            
+                                        </div>
+                                            <div class="io-description">
+                                                <p>* </p>
+            
+                                            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> getMeterValues</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play circle">
+                                            <span class="fa fa-circle"></span>
+                                        </span>
+                                    <code>getMeterValues(meter: Meter)</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Gets the values for the specified {Meter} metric.</p>
+            </div>
+                                        <div class="io-description">
+                                                <b>Parameters :</b>
+                                                <ul class="jsdoc-params">
+                                                        <li>
+                                                            <div>
+                                                                <b>meter</b>
+                                                                    :     <code>Meter</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                </ul>
+                                        </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>{}</code>
+            
+                                        </div>
+                                            <div class="io-description">
+                                                <p>* </p>
+            
+                                            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> getTimerValues</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play circle">
+                                            <span class="fa fa-circle"></span>
+                                        </span>
+                                    <code>getTimerValues(timer: Timer)</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Gets the values for the specified {Timer} metric.</p>
+            </div>
+                                        <div class="io-description">
+                                                <b>Parameters :</b>
+                                                <ul class="jsdoc-params">
+                                                        <li>
+                                                            <div>
+                                                                <b>timer</b>
+                                                                    :     <code>Timer</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                </ul>
+                                        </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>{}</code>
+            
+                                        </div>
+                                            <div class="io-description">
+                                                <p>* </p>
+            
+                                            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Private</span> getNumber</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play lock">
+                                            <span class="fa fa-lock"></span>
+                                        </span>
+                                    <code>getNumber(value: number)</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Either gets 0 or the specifed value.</p>
+            </div>
+                                        <div class="io-description">
+                                                <b>Parameters :</b>
+                                                <ul class="jsdoc-params">
+                                                        <li>
+                                                            <div>
+                                                                <b>value</b>
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                </ul>
+                                        </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>number</code>
+            
+                                        </div>
+                                            <div class="io-description">
+                                                <p>* </p>
+            
+                                            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> getLog</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play circle">
+                                            <span class="fa fa-circle"></span>
+                                        </span>
+                                    <code>getLog()</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Gets the logger instance.</p>
+            </div>
+                                        <div class="io-description">
+                                        </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>Logger</code>
+            
+                                        </div>
+                                            <div class="io-description">
+                                                <p>* </p>
+            
+                                            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> setLog</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play circle">
+                                            <span class="fa fa-circle"></span>
+                                        </span>
+                                    <code>setLog(log: Logger)</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Sets the logger instance.</p>
+            </div>
+                                        <div class="io-description">
+                                                <b>Parameters :</b>
+                                                <ul class="jsdoc-params">
+                                                        <li>
+                                                            <div>
+                                                                <b>log</b>
+                                                                    :     <code>Logger</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                </ul>
+                                        </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>void</code>
+            
+                                        </div>
+                                            <div class="io-description">
+                                                
+                                            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> reportEvent</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play circle">
+                                            <span class="fa fa-circle"></span>
+                                        </span>
+                                    <code>reportEvent(event: TEvent)</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Reports an {@link Event}.</p>
+            </div>
+                                        <div class="io-description">
+                                                <b>Parameters :</b>
+                                                <ul class="jsdoc-params">
+                                                        <li>
+                                                            <div>
+                                                                <b>event</b>
+                                                                    :     <code><a href="https://angular.io/docs/ts/latest/api/router/index/Event-type-alias.html" target="_blank" >Event</a></code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                </ul>
+                                        </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>any</code>
+            
+                                        </div>
+                                            <div class="io-description">
+                                                <p>* </p>
+            
+                                            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Public</span> flushEvents</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play circle">
+                                            <span class="fa fa-circle"></span>
+                                        </span>
+                                    <code>flushEvents()</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Does nothing</p>
+            </div>
+                                        <div class="io-description">
+                                        </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>any</code>
+            
+                                        </div>
+                                            <div class="io-description">
+                                                <p>* </p>
+            
+                                            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Protected</span> handleResults</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play lock">
+                                            <span class="fa fa-lock"></span>
+                                        </span>
+                                    <code>handleResults(ctx: OverallReportContext, registry: MetricRegistry, date: Date, type: MetricType, results: ReportingResult<any, {}>[])</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Send the combinations of index and document to the elasticsearch cluster<br>using the bulk method of the elasticsearch client.</p>
+            </div>
+                                        <div class="io-description">
+                                                <b>Parameters :</b>
+                                                <ul class="jsdoc-params">
+                                                        <li>
+                                                            <div>
+                                                                <b>registry</b>
+                                                                    :     <code>MetricRegistry</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div>
+                                                                <b>date</b>
+                                                                    :     <code>Date</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div>
+                                                                <b>type</b>
+                                                                    :     <code>MetricType</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div>
+                                                                <b>results</b>
+                                                                    :     <code>Array</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                </ul>
+                                        </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>any</code>
+            
+                                        </div>
+                                            <div class="io-description">
+                                                <p>* </p>
+            
+                                            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Protected</span> reportMetric</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play lock">
+                                            <span class="fa fa-lock"></span>
+                                        </span>
+                                    <code>reportMetric(metric: Metric, ctx: MetricSetReportContext<Metric>)</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Generalized reporting method of all types of metric instances.<br>Builds the index configuration document and the metric document.</p>
+            </div>
+                                        <div class="io-description">
+                                                <b>Parameters :</b>
+                                                <ul class="jsdoc-params">
+                                                        <li>
+                                                            <div>
+                                                                <b>metric</b>
+                                                                    :     <code>Metric</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div>
+                                                                <b>ctx</b>
+                                                                    :     <code>ReportingContext</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                </ul>
+                                        </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>{}</code>
+            
+                                        </div>
+                                            <div class="io-description">
+                                                <p>* </p>
+            
+                                            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Protected</span> reportCounter</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play lock">
+                                            <span class="fa fa-lock"></span>
+                                        </span>
+                                    <code>reportCounter(counter: MonotoneCounter | Counter, ctx: MetricSetReportContext<MonotoneCounter | Counter>)</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Calls {@link #reportMetric} with the specified arguments.&gt;)} ctx</p>
+            </div>
+                                        <div class="io-description">
+                                                <b>Parameters :</b>
+                                                <ul class="jsdoc-params">
+                                                        <li>
+                                                            <div>
+                                                                <b>counter</b>
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                </ul>
+                                        </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>{}</code>
+            
+                                        </div>
+                                            <div class="io-description">
+                                                <p>* </p>
+            
+                                            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Protected</span> reportGauge</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play lock">
+                                            <span class="fa fa-lock"></span>
+                                        </span>
+                                    <code>reportGauge(gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>)</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Calls {@link #reportMetric} with the specified arguments.</p>
+            </div>
+                                        <div class="io-description">
+                                                <b>Parameters :</b>
+                                                <ul class="jsdoc-params">
+                                                        <li>
+                                                            <div>
+                                                                <b>gauge</b>
+                                                                    :     <code>Gauge</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div>
+                                                                <b>ctx</b>
+                                                                    :     <code>ReportingContext</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                </ul>
+                                        </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>{}</code>
+            
+                                        </div>
+                                            <div class="io-description">
+                                                <p>* </p>
+            
+                                            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Protected</span> reportHistogram</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play lock">
+                                            <span class="fa fa-lock"></span>
+                                        </span>
+                                    <code>reportHistogram(histogram: Histogram, ctx: MetricSetReportContext<Histogram>)</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Calls {@link #reportMetric} with the specified arguments.</p>
+            </div>
+                                        <div class="io-description">
+                                                <b>Parameters :</b>
+                                                <ul class="jsdoc-params">
+                                                        <li>
+                                                            <div>
+                                                                <b>histogram</b>
+                                                                    :     <code>Histogram</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div>
+                                                                <b>ctx</b>
+                                                                    :     <code>ReportingContext</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                </ul>
+                                        </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>{}</code>
+            
+                                        </div>
+                                            <div class="io-description">
+                                                <p>* </p>
+            
+                                            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Protected</span> reportMeter</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play lock">
+                                            <span class="fa fa-lock"></span>
+                                        </span>
+                                    <code>reportMeter(meter: Meter, ctx: MetricSetReportContext<Meter>)</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Calls {@link #reportMetric} with the specified arguments.</p>
+            </div>
+                                        <div class="io-description">
+                                                <b>Parameters :</b>
+                                                <ul class="jsdoc-params">
+                                                        <li>
+                                                            <div>
+                                                                <b>meter</b>
+                                                                    :     <code>Meter</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div>
+                                                                <b>ctx</b>
+                                                                    :     <code>ReportingContext</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                </ul>
+                                        </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>{}</code>
+            
+                                        </div>
+                                            <div class="io-description">
+                                                <p>* </p>
+            
+                                            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Protected</span> reportTimer</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play lock">
+                                            <span class="fa fa-lock"></span>
+                                        </span>
+                                    <code>reportTimer(timer: Timer, ctx: MetricSetReportContext<Timer>)</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Calls {@link #reportMetric} with the specified arguments.</p>
+            </div>
+                                        <div class="io-description">
+                                                <b>Parameters :</b>
+                                                <ul class="jsdoc-params">
+                                                        <li>
+                                                            <div>
+                                                                <b>timer</b>
+                                                                    :     <code>Timer</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div>
+                                                                <b>ctx</b>
+                                                                    :     <code>ReportingContext</code>
+            
+                                                            </div>
+                                                            <div>
+                                                                
+                                                            </div>
+                                                        </li>
+                                                </ul>
+                                        </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>{}</code>
+            
+                                        </div>
+                                            <div class="io-description">
+                                                <p>* </p>
+            
+                                            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </section>
+
+
+            <section>
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Private</span> exchange</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <span class="modifier-icon fa fa-lock"></span><code>exchange:     <code>Exchange</code>
+            </bcode>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>RabbitMQ exchange used to do reporting.</p>
+            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Private</span> logMetadata</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <span class="modifier-icon fa fa-lock"></span><code>logMetadata:     <code>any</code>
+            </bcode>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Metadata for the logger.</p>
+            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+    <div class="tab-pane fade tab-source-code" id="source">
+        <pre><code class="hljs javascript">import &quot;source-map-support/register&quot;;
+
+import * as Amqp from &quot;amqp-ts&quot;;
+import {
+    Clock,
+    Counter,
+    Event,
+    Gauge,
+    Histogram,
+    Logger,
+    Meter,
+    Metric,
+    MetricRegistry,
+    MetricSetReportContext,
+    MetricType,
+    MILLISECOND,
+    MonotoneCounter,
+    OverallReportContext,
+    ReportingResult,
+    ScheduledMetricReporter,
+    ScheduledMetricReporterOptions,
+    Scheduler,
+    StdClock,
+    Tags,
+    Timer,
+    TimeUnit,
+} from &quot;inspector-metrics&quot;;
+
+const connection &#x3D; new Amqp.Connection(&quot;amqp://localhost&quot;);
+const exchange &#x3D; connection.declareExchange(&quot;ExchangeName&quot;);
+const queue &#x3D; connection.declareQueue(&quot;QueueName&quot;);
+queue.bind(exchange);
+queue.activateConsumer((message) &#x3D;&gt; {
+    console.log(&quot;Message received: &quot; + message.getContent());
+});
+
+export interface RabbitMqMetricReporterOptions extends ScheduledMetricReporterOptions {
+    /**
+     * Logger instance used to report errors.
+     *
+     * @type {Logger}
+     * @memberof RabbitMqMetricReporterOptions
+     */
+    log: Logger;
+
+    // TO DO: COMMENT
+    connection: string;
+    exchangeName: string;
+    queueName: string;
+}
+
+export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqMetricReporterOptions, {}&gt; {
+    /**
+     * Gets the values for the specified monotone counter metric.
+     *
+     * @static
+     * @param {MonotoneCounter} counter
+     * @returns {{}}
+     * @memberof RabbitMqMetricReporter
+     */
+    public static getMonotoneCounterValues(counter: MonotoneCounter): {} {
+        const count &#x3D; counter.getCount();
+        if (!count || isNaN(count)) {
+            return null;
+        }
+        return { count };
+    }
+
+    /**
+     * Gets the values for the specified counter metric.
+     *
+     * @static
+     * @param {Counter} counter
+     * @returns {{}}
+     * @memberof RabbitMqMetricReporter
+     */
+    public static getCounterValues(counter: Counter): {} {
+        const count &#x3D; counter.getCount();
+        if (!count || isNaN(count)) {
+            return null;
+        }
+        return { count };
+    }
+
+    /**
+     * Gets the values for the specified {Gauge} metric.
+     *
+     * @static
+     * @param {Gauge&lt;any&gt;} gauge
+     * @returns {{}}
+     * @memberof RabbitMqMetricReporter
+     */
+    public static getGaugeValue(gauge: Gauge&lt;any&gt;): {} {
+        const value &#x3D; gauge.getValue();
+        if ((!value &amp;&amp; value !&#x3D;&#x3D; 0) || Number.isNaN(value)) {
+            return null;
+        }
+        if (typeof value &#x3D;&#x3D;&#x3D; &quot;object&quot;) {
+            return value;
+        }
+        return { value };
+    }
+
+    /**
+     * Gets the values for the specified {Histogram} metric.
+     *
+     * @static
+     * @param {Histogram} histogram
+     * @returns {{}}
+     * @memberof RabbitMqMetricReporter
+     */
+    public static getHistogramValues(histogram: Histogram): {} {
+        const value &#x3D; histogram.getCount();
+        if (!value || isNaN(value)) {
+            return null;
+        }
+        const snapshot &#x3D; histogram.getSnapshot();
+        const values: any &#x3D; {};
+
+        values[&#x60;count&#x60;] &#x3D; value;
+        values[&#x60;max&#x60;] &#x3D; this.getNumber(snapshot.getMax());
+        values[&#x60;mean&#x60;] &#x3D; this.getNumber(snapshot.getMean());
+        values[&#x60;min&#x60;] &#x3D; this.getNumber(snapshot.getMin());
+        values[&#x60;p50&#x60;] &#x3D; this.getNumber(snapshot.getMedian());
+        values[&#x60;p75&#x60;] &#x3D; this.getNumber(snapshot.get75thPercentile());
+        values[&#x60;p95&#x60;] &#x3D; this.getNumber(snapshot.get95thPercentile());
+        values[&#x60;p98&#x60;] &#x3D; this.getNumber(snapshot.get98thPercentile());
+        values[&#x60;p99&#x60;] &#x3D; this.getNumber(snapshot.get99thPercentile());
+        values[&#x60;p999&#x60;] &#x3D; this.getNumber(snapshot.get999thPercentile());
+        values[&#x60;stddev&#x60;] &#x3D; this.getNumber(snapshot.getStdDev());
+
+        return values;
+    }
+
+    /**
+     * Gets the values for the specified {Meter} metric.
+     *
+     * @static
+     * @param {Meter} meter
+     * @returns {{}}
+     * @memberof RabbitMqMetricReporter
+     */
+    public static getMeterValues(meter: Meter): {} {
+        const value &#x3D; meter.getCount();
+        if (!value || isNaN(value)) {
+            return null;
+        }
+        const values: any &#x3D; {};
+
+        values[&#x60;count&#x60;] &#x3D; value;
+        values[&#x60;m15_rate&#x60;] &#x3D; this.getNumber(meter.get15MinuteRate());
+        values[&#x60;m1_rate&#x60;] &#x3D; this.getNumber(meter.get1MinuteRate());
+        values[&#x60;m5_rate&#x60;] &#x3D; this.getNumber(meter.get5MinuteRate());
+        values[&#x60;mean_rate&#x60;] &#x3D; this.getNumber(meter.getMeanRate());
+
+        return values;
+    }
+
+    /**
+     * Gets the values for the specified {Timer} metric.
+     *
+     * @static
+     * @param {Timer} timer
+     * @returns {{}}
+     * @memberof RabbitMqMetricReporter
+     */
+    public static getTimerValues(timer: Timer): {} {
+        const value &#x3D; timer.getCount();
+        if (!value || isNaN(value)) {
+            return null;
+        }
+        const snapshot &#x3D; timer.getSnapshot();
+        const values: any &#x3D; {};
+
+        values[&#x60;count&#x60;] &#x3D; value;
+        values[&#x60;m15_rate&#x60;] &#x3D; this.getNumber(timer.get15MinuteRate());
+        values[&#x60;m1_rate&#x60;] &#x3D; this.getNumber(timer.get1MinuteRate());
+        values[&#x60;m5_rate&#x60;] &#x3D; this.getNumber(timer.get5MinuteRate());
+        values[&#x60;max&#x60;] &#x3D; this.getNumber(snapshot.getMax());
+        values[&#x60;mean&#x60;] &#x3D; this.getNumber(snapshot.getMean());
+        values[&#x60;mean_rate&#x60;] &#x3D; this.getNumber(timer.getMeanRate());
+        values[&#x60;min&#x60;] &#x3D; this.getNumber(snapshot.getMin());
+        values[&#x60;p50&#x60;] &#x3D; this.getNumber(snapshot.getMedian());
+        values[&#x60;p75&#x60;] &#x3D; this.getNumber(snapshot.get75thPercentile());
+        values[&#x60;p95&#x60;] &#x3D; this.getNumber(snapshot.get95thPercentile());
+        values[&#x60;p98&#x60;] &#x3D; this.getNumber(snapshot.get98thPercentile());
+        values[&#x60;p99&#x60;] &#x3D; this.getNumber(snapshot.get99thPercentile());
+        values[&#x60;p999&#x60;] &#x3D; this.getNumber(snapshot.get999thPercentile());
+        values[&#x60;stddev&#x60;] &#x3D; this.getNumber(snapshot.getStdDev());
+
+        return values;
+    }
+
+    /**
+     * Either gets 0 or the specifed value.
+     *
+     * @private
+     * @param {number} value
+     * @returns {number}
+     * @memberof RabbitMqMetricReporter
+     */
+    private static getNumber(value: number): number {
+        if (isNaN(value)) {
+            return 0;
+        }
+        return value;
+    }
+
+    /**
+     * Metadata for the logger.
+     *
+     * @private
+     * @type {*}
+     * @memberof RabbitMqMetricReporter
+     */
+    private logMetadata: any;
+
+    /**
+     * RabbitMQ exchange used to do reporting.
+     *
+     * @private
+     * @type {Amqp.Exchange}
+     * @memberof RabbitMqMetricReporter
+     */
+    private exchange: Amqp.Exchange;
+
+
+    /**
+     * Creates an instance of RabbitMqMetricReporter.
+     */
+    public constructor(
+        {
+            connection,
+            exchangeName,
+            queueName,
+            log &#x3D; console,
+            reportInterval &#x3D; 1000,
+            unit &#x3D; MILLISECOND,
+            clock &#x3D; new StdClock(),
+            scheduler &#x3D; setInterval,
+            minReportingTimeout &#x3D; 1,
+            tags &#x3D; new Map(),
+        }: {
+            /**
+             * RabbitMQ connection URI.
+             * @type {string}
+             */
+            connection: string,
+            /**
+             * RabbitMQ exchange name.
+             * @type {string}
+             */
+            exchangeName: string,
+            /**
+             * RabbitMQ queue name.
+             * @type {string}
+             */
+            queueName: string,
+            /**
+             * The logger instance used to report metrics.
+             * @type {Logger}
+             */
+            log?: Logger,
+            /**
+             * Reporting interval in the time-unit of {@link #unit}.
+             * @type {number}
+             */
+            reportInterval?: number;
+            /**
+             * The time-unit of the reporting interval.
+             * @type {TimeUnit}
+             */
+            unit?: TimeUnit;
+            /**
+             * The clock instance used determine the current time.
+             * @type {Clock}
+             */
+            clock?: Clock;
+            /**
+             * The scheduler function used to trigger reporting.
+             * @type {Scheduler}
+             */
+            scheduler?: Scheduler;
+            /**
+             * The timeout in which a metrics gets reported wether it&#x27;s value has changed or not.
+             * @type {number}
+             */
+            minReportingTimeout?: number;
+            /**
+             * Common tags for this reporter instance.
+             * @type {Map&lt;string, string&gt;}
+             */
+            tags?: Map&lt;string, string&gt;;
+        }) {
+        super({
+            connection,
+            exchangeName,
+            queueName,
+            clock,
+            log,
+            minReportingTimeout,
+            reportInterval,
+            scheduler,
+            tags,
+            unit,
+        });
+
+        this.logMetadata &#x3D; {
+            reportInterval,
+            tags,
+            unit,
+        };
+
+        const amqpConnection &#x3D; new Amqp.Connection(connection);
+        const queue &#x3D; amqpConnection.declareQueue(queueName);
+        this.exchange &#x3D; amqpConnection.declareExchange(exchangeName);
+        queue.bind(this.exchange);
+    }
+
+    /**
+     * Gets the logger instance.
+     *
+     * @returns {Logger}
+     * @memberof RabbitMqMetricReporter
+     */
+    public getLog(): Logger {
+        return this.options.log;
+    }
+
+    /**
+     * Sets the logger instance.
+     *
+     * @param {Logger} log
+     * @memberof RabbitMqMetricReporter
+     */
+    public setLog(log: Logger): void {
+        this.options.log &#x3D; log;
+    }
+
+    /**
+     * Reports an {@link Event}.
+     *
+     * @param {Event} event
+     * @returns {Promise&lt;TEvent&gt;}
+     * @memberof RabbitMqMetricReporter
+     */
+    public async reportEvent&lt;TEventData, TEvent extends Event&lt;TEventData&gt;&gt;(event: TEvent): Promise&lt;TEvent&gt; {
+        const result &#x3D; this.reportGauge(event, {
+            date: event.getTime(),
+            metrics: [],
+            overallCtx: null,
+            registry: null,
+            type: &quot;gauge&quot;,
+        });
+
+        if (result) {
+            await this.handleResults(null, null, event.getTime(), &quot;gauge&quot;, [{
+                metric: event,
+                result,
+            }]);
+        }
+
+        return event;
+    }
+
+    /**
+     * Does nothing
+     *
+     * @returns {Promise&lt;void&gt;}
+     * @memberof RabbitMqMetricReporter
+     */
+    public async flushEvents(): Promise&lt;void&gt; {
+    }
+
+    /**
+     * Send the combinations of index and document to the elasticsearch cluster
+     * using the bulk method of the elasticsearch client.
+     *
+     * @protected
+     * @param {MetricRegistry} registry
+     * @param {Date} date
+     * @param {MetricType} type
+     * @param {Array&lt;ReportingResult&lt;any, any[]&gt;&gt;} results
+     * @returns {Promise&lt;void&gt;}
+     * @memberof RabbitMqMetricReporter
+     */
+    protected handleResults(
+        ctx: OverallReportContext,
+        registry: MetricRegistry,
+        date: Date,
+        type: MetricType,
+        results: Array&lt;ReportingResult&lt;any, {}&gt;&gt;
+    ): Promise&lt;void&gt; {
+        const message &#x3D; new Amqp.Message(JSON.stringify(results));
+
+        this.exchange.send(message);
+
+        return Promise.resolve();
+    }
+
+    /**
+     * Generalized reporting method of all types of metric instances.
+     * Builds the index configuration document and the metric document.
+     *
+     * @protected
+     * @param {Metric} metric
+     * @param {ReportingContext&lt;Metric&gt;} ctx
+     * @returns {{}}
+     * @memberof RabbitMqMetricReporter
+     */
+    protected reportMetric(metric: Metric, ctx: MetricSetReportContext&lt;Metric&gt;): {} {
+        let values &#x3D; null;
+        if (metric instanceof MonotoneCounter) {
+            values &#x3D; RabbitMqMetricReporter.getMonotoneCounterValues(metric);
+        } else if (metric instanceof Counter) {
+            values &#x3D; RabbitMqMetricReporter.getCounterValues(metric);
+        } else if (metric instanceof Histogram) {
+            values &#x3D; RabbitMqMetricReporter.getHistogramValues(metric);
+        } else if (metric instanceof Meter) {
+            values &#x3D; RabbitMqMetricReporter.getMeterValues(metric);
+        } else if (metric instanceof Timer) {
+            values &#x3D; RabbitMqMetricReporter.getTimerValues(metric);
+        } else {
+            values &#x3D; RabbitMqMetricReporter.getGaugeValue(metric as Gauge&lt;any&gt;);
+        }
+
+        const name &#x3D; metric.getName();
+        const group &#x3D; metric.getGroup();
+        const tags &#x3D; this.buildTags(ctx.registry, metric);
+        const timestamp &#x3D; ctx.date;
+        const type &#x3D; ctx.type;
+
+        return { name, group, tags, timestamp, values, type };
+    }
+
+    /**
+     * Calls {@link #reportMetric} with the specified arguments.
+     *
+     * @protected
+     * @param {(MonotoneCounter | Counter)} counter
+     * @param {(ReportingContext&lt;MonotoneCounter | Counter&gt;)} ctx
+     * @returns {{}}
+     * @memberof RabbitMqMetricReporter
+     */
+    protected reportCounter(
+        counter: MonotoneCounter | Counter, ctx: MetricSetReportContext&lt;MonotoneCounter | Counter&gt;): {} {
+        return this.reportMetric(counter, ctx);
+    }
+
+    /**
+     * Calls {@link #reportMetric} with the specified arguments.
+     *
+     * @protected
+     * @param {Gauge&lt;any&gt;} gauge
+     * @param {ReportingContext&lt;Gauge&lt;any&gt;&gt;} ctx
+     * @returns {{}}
+     * @memberof RabbitMqMetricReporter
+     */
+    protected reportGauge(gauge: Gauge&lt;any&gt;, ctx: MetricSetReportContext&lt;Gauge&lt;any&gt;&gt;): {} {
+        return this.reportMetric(gauge, ctx);
+    }
+
+    /**
+     * Calls {@link #reportMetric} with the specified arguments.
+     *
+     * @protected
+     * @param {Histogram} histogram
+     * @param {ReportingContext&lt;Histogram&gt;} ctx
+     * @returns {{}}
+     * @memberof RabbitMqMetricReporter
+     */
+    protected reportHistogram(histogram: Histogram, ctx: MetricSetReportContext&lt;Histogram&gt;): {} {
+        return this.reportMetric(histogram, ctx);
+    }
+
+    /**
+     * Calls {@link #reportMetric} with the specified arguments.
+     *
+     * @protected
+     * @param {Meter} meter
+     * @param {ReportingContext&lt;Meter&gt;} ctx
+     * @returns {{}}
+     * @memberof RabbitMqMetricReporter
+     */
+    protected reportMeter(meter: Meter, ctx: MetricSetReportContext&lt;Meter&gt;): {} {
+        return this.reportMetric(meter, ctx);
+    }
+
+    /**
+     * Calls {@link #reportMetric} with the specified arguments.
+     *
+     * @protected
+     * @param {Timer} timer
+     * @param {ReportingContext&lt;Timer&gt;} ctx
+     * @returns {{}}
+     * @memberof RabbitMqMetricReporter
+     */
+    protected reportTimer(timer: Timer, ctx: MetricSetReportContext&lt;Timer&gt;): {} {
+        return this.reportMetric(timer, ctx);
+    }
+}</code></pre>
+    </div>
+</div>
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+           </div>
+       </div>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/search/search.js"></script>
+       <script src="../js/search/lunr.min.js"></script>
+       <script src="../js/search/search-lunr.js"></script>
+
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/highlight.pack.js"></script>
+       <script src="../js/libs/highlightjs-line-numbers.min.js"></script>
+       <script src="../js/search/search_index.js"></script>
+       <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                hljs.initHighlightingOnLoad();
+                hljs.initLineNumbersOnLoad();
+            });
+       </script>
+
+    </body>
+</html>
