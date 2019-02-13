@@ -74,9 +74,6 @@
             
             
             
-                    <li class="chapter">
-                        <a data-type="chapter-link" href="../miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
-                    </li>
             
                     <li class="chapter">
                         <a data-type="chapter-link" href="../coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
@@ -153,9 +150,6 @@
                    
                    
                    
-                           <li class="chapter">
-                               <a data-type="chapter-link" href="../miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
-                           </li>
                    
                            <li class="chapter">
                                <a data-type="chapter-link" href="../coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
@@ -1165,531 +1159,489 @@
                             </tr>
                         </tbody>
                     </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b><span class="modifier">Private</span> logMetadata</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <span class="modifier-icon fa fa-lock"></span><code>logMetadata:     <code>any</code>
-            </bcode>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>Metadata for the logger.</p>
-            </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
             </section>
     </div>
     <div class="tab-pane fade tab-source-code" id="source">
         <pre><code class="hljs javascript">import &quot;source-map-support/register&quot;;
 
 import * as Amqp from &quot;amqp-ts&quot;;
+
 import {
-    Clock,
-    Counter,
-    Event,
-    Gauge,
-    Histogram,
-    Logger,
-    Meter,
-    Metric,
-    MetricRegistry,
-    MetricSetReportContext,
-    MetricType,
-    MILLISECOND,
-    MonotoneCounter,
-    OverallReportContext,
-    ReportingResult,
-    ScheduledMetricReporter,
-    ScheduledMetricReporterOptions,
-    Scheduler,
-    StdClock,
-    Tags,
-    Timer,
-    TimeUnit,
+  Clock,
+  Counter,
+  Event,
+  Gauge,
+  Histogram,
+  Logger,
+  Meter,
+  Metric,
+  MetricRegistry,
+  MetricSetReportContext,
+  MetricType,
+  MILLISECOND,
+  MonotoneCounter,
+  OverallReportContext,
+  ReportingResult,
+  ScheduledMetricReporter,
+  ScheduledMetricReporterOptions,
+  Scheduler,
+  StdClock,
+  Timer,
+  TimeUnit,
 } from &quot;inspector-metrics&quot;;
 
-const connection &#x3D; new Amqp.Connection(&quot;amqp://localhost&quot;);
-const exchange &#x3D; connection.declareExchange(&quot;ExchangeName&quot;);
-const queue &#x3D; connection.declareQueue(&quot;QueueName&quot;);
-queue.bind(exchange);
-queue.activateConsumer((message) &#x3D;&gt; {
-    console.log(&quot;Message received: &quot; + message.getContent());
-});
-
 export interface RabbitMqMetricReporterOptions extends ScheduledMetricReporterOptions {
-    /**
-     * Logger instance used to report errors.
-     *
-     * @type {Logger}
-     * @memberof RabbitMqMetricReporterOptions
-     */
-    log: Logger;
+  /**
+   * Logger instance used to report errors.
+   *
+   * @type {Logger}
+   * @memberof RabbitMqMetricReporterOptions
+   */
+  log: Logger;
 
-    // TO DO: COMMENT
-    connection: string;
-    exchangeName: string;
-    queueName: string;
+  // TO DO: COMMENT
+  connection: string;
+  exchangeName: string;
+  queueName: string;
 }
 
 export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqMetricReporterOptions, {}&gt; {
-    /**
-     * Gets the values for the specified monotone counter metric.
-     *
-     * @static
-     * @param {MonotoneCounter} counter
-     * @returns {{}}
-     * @memberof RabbitMqMetricReporter
-     */
-    public static getMonotoneCounterValues(counter: MonotoneCounter): {} {
-        const count &#x3D; counter.getCount();
-        if (!count || isNaN(count)) {
-            return null;
-        }
-        return { count };
+  /**
+   * Gets the values for the specified monotone counter metric.
+   *
+   * @static
+   * @param {MonotoneCounter} counter
+   * @returns {{}}
+   * @memberof RabbitMqMetricReporter
+   */
+  public static getMonotoneCounterValues(counter: MonotoneCounter): {} {
+    const count &#x3D; counter.getCount();
+    if (!count || isNaN(count)) {
+      return null;
+    }
+    return { count };
+  }
+
+  /**
+   * Gets the values for the specified counter metric.
+   *
+   * @static
+   * @param {Counter} counter
+   * @returns {{}}
+   * @memberof RabbitMqMetricReporter
+   */
+  public static getCounterValues(counter: Counter): {} {
+    const count &#x3D; counter.getCount();
+    if (!count || isNaN(count)) {
+      return null;
+    }
+    return { count };
+  }
+
+  /**
+   * Gets the values for the specified {Gauge} metric.
+   *
+   * @static
+   * @param {Gauge&lt;any&gt;} gauge
+   * @returns {{}}
+   * @memberof RabbitMqMetricReporter
+   */
+  public static getGaugeValue(gauge: Gauge&lt;any&gt;): {} {
+    const value &#x3D; gauge.getValue();
+    if ((!value &amp;&amp; value !&#x3D;&#x3D; 0) || Number.isNaN(value)) {
+      return null;
+    }
+    if (typeof value &#x3D;&#x3D;&#x3D; &quot;object&quot;) {
+      return value;
+    }
+    return { value };
+  }
+
+  /**
+   * Gets the values for the specified {Histogram} metric.
+   *
+   * @static
+   * @param {Histogram} histogram
+   * @returns {{}}
+   * @memberof RabbitMqMetricReporter
+   */
+  public static getHistogramValues(histogram: Histogram): {} {
+    const value &#x3D; histogram.getCount();
+    if (!value || isNaN(value)) {
+      return null;
+    }
+    const snapshot &#x3D; histogram.getSnapshot();
+    const values: any &#x3D; {};
+
+    values[&#x60;count&#x60;] &#x3D; value;
+    values[&#x60;max&#x60;] &#x3D; this.getNumber(snapshot.getMax());
+    values[&#x60;mean&#x60;] &#x3D; this.getNumber(snapshot.getMean());
+    values[&#x60;min&#x60;] &#x3D; this.getNumber(snapshot.getMin());
+    values[&#x60;p50&#x60;] &#x3D; this.getNumber(snapshot.getMedian());
+    values[&#x60;p75&#x60;] &#x3D; this.getNumber(snapshot.get75thPercentile());
+    values[&#x60;p95&#x60;] &#x3D; this.getNumber(snapshot.get95thPercentile());
+    values[&#x60;p98&#x60;] &#x3D; this.getNumber(snapshot.get98thPercentile());
+    values[&#x60;p99&#x60;] &#x3D; this.getNumber(snapshot.get99thPercentile());
+    values[&#x60;p999&#x60;] &#x3D; this.getNumber(snapshot.get999thPercentile());
+    values[&#x60;stddev&#x60;] &#x3D; this.getNumber(snapshot.getStdDev());
+
+    return values;
+  }
+
+  /**
+   * Gets the values for the specified {Meter} metric.
+   *
+   * @static
+   * @param {Meter} meter
+   * @returns {{}}
+   * @memberof RabbitMqMetricReporter
+   */
+  public static getMeterValues(meter: Meter): {} {
+    const value &#x3D; meter.getCount();
+    if (!value || isNaN(value)) {
+      return null;
+    }
+    const values: any &#x3D; {};
+
+    values[&#x60;count&#x60;] &#x3D; value;
+    values[&#x60;m15_rate&#x60;] &#x3D; this.getNumber(meter.get15MinuteRate());
+    values[&#x60;m1_rate&#x60;] &#x3D; this.getNumber(meter.get1MinuteRate());
+    values[&#x60;m5_rate&#x60;] &#x3D; this.getNumber(meter.get5MinuteRate());
+    values[&#x60;mean_rate&#x60;] &#x3D; this.getNumber(meter.getMeanRate());
+
+    return values;
+  }
+
+  /**
+   * Gets the values for the specified {Timer} metric.
+   *
+   * @static
+   * @param {Timer} timer
+   * @returns {{}}
+   * @memberof RabbitMqMetricReporter
+   */
+  public static getTimerValues(timer: Timer): {} {
+    const value &#x3D; timer.getCount();
+    if (!value || isNaN(value)) {
+      return null;
+    }
+    const snapshot &#x3D; timer.getSnapshot();
+    const values: any &#x3D; {};
+
+    values[&#x60;count&#x60;] &#x3D; value;
+    values[&#x60;m15_rate&#x60;] &#x3D; this.getNumber(timer.get15MinuteRate());
+    values[&#x60;m1_rate&#x60;] &#x3D; this.getNumber(timer.get1MinuteRate());
+    values[&#x60;m5_rate&#x60;] &#x3D; this.getNumber(timer.get5MinuteRate());
+    values[&#x60;max&#x60;] &#x3D; this.getNumber(snapshot.getMax());
+    values[&#x60;mean&#x60;] &#x3D; this.getNumber(snapshot.getMean());
+    values[&#x60;mean_rate&#x60;] &#x3D; this.getNumber(timer.getMeanRate());
+    values[&#x60;min&#x60;] &#x3D; this.getNumber(snapshot.getMin());
+    values[&#x60;p50&#x60;] &#x3D; this.getNumber(snapshot.getMedian());
+    values[&#x60;p75&#x60;] &#x3D; this.getNumber(snapshot.get75thPercentile());
+    values[&#x60;p95&#x60;] &#x3D; this.getNumber(snapshot.get95thPercentile());
+    values[&#x60;p98&#x60;] &#x3D; this.getNumber(snapshot.get98thPercentile());
+    values[&#x60;p99&#x60;] &#x3D; this.getNumber(snapshot.get99thPercentile());
+    values[&#x60;p999&#x60;] &#x3D; this.getNumber(snapshot.get999thPercentile());
+    values[&#x60;stddev&#x60;] &#x3D; this.getNumber(snapshot.getStdDev());
+
+    return values;
+  }
+
+  /**
+   * Either gets 0 or the specifed value.
+   *
+   * @private
+   * @param {number} value
+   * @returns {number}
+   * @memberof RabbitMqMetricReporter
+   */
+  private static getNumber(value: number): number {
+    if (isNaN(value)) {
+      return 0;
+    }
+    return value;
+  }
+
+  /**
+   * RabbitMQ exchange used to do reporting.
+   *
+   * @private
+   * @type {Amqp.Exchange}
+   * @memberof RabbitMqMetricReporter
+   */
+  private exchange: Amqp.Exchange;
+
+  /**
+   * Creates an instance of RabbitMqMetricReporter.
+   */
+  public constructor(
+    {
+      connection,
+      exchangeName,
+      queueName,
+      log &#x3D; console,
+      reportInterval &#x3D; 1000,
+      unit &#x3D; MILLISECOND,
+      clock &#x3D; new StdClock(),
+      scheduler &#x3D; setInterval,
+      minReportingTimeout &#x3D; 1,
+      tags &#x3D; new Map(),
+    }: {
+      /**
+       * RabbitMQ connection URI.
+       * @type {string}
+       */
+      connection: string,
+      /**
+       * RabbitMQ exchange name.
+       * @type {string}
+       */
+      exchangeName: string,
+      /**
+       * RabbitMQ queue name.
+       * @type {string}
+       */
+      queueName: string,
+      /**
+       * The logger instance used to report metrics.
+       * @type {Logger}
+       */
+      log?: Logger,
+      /**
+       * Reporting interval in the time-unit of {@link #unit}.
+       * @type {number}
+       */
+      reportInterval?: number;
+      /**
+       * The time-unit of the reporting interval.
+       * @type {TimeUnit}
+       */
+      unit?: TimeUnit;
+      /**
+       * The clock instance used determine the current time.
+       * @type {Clock}
+       */
+      clock?: Clock;
+      /**
+       * The scheduler function used to trigger reporting.
+       * @type {Scheduler}
+       */
+      scheduler?: Scheduler;
+      /**
+       * The timeout in which a metrics gets reported wether it&#x27;s value has changed or not.
+       * @type {number}
+       */
+      minReportingTimeout?: number;
+      /**
+       * Common tags for this reporter instance.
+       * @type {Map&lt;string, string&gt;}
+       */
+      tags?: Map&lt;string, string&gt;;
+    }) {
+    super({
+      clock,
+      connection,
+      exchangeName,
+      log,
+      minReportingTimeout,
+      queueName,
+      reportInterval,
+      scheduler,
+      tags,
+      unit,
+    });
+
+    const amqpConnection &#x3D; new Amqp.Connection(connection);
+    const queue &#x3D; amqpConnection.declareQueue(queueName);
+    const exchange &#x3D; amqpConnection.declareExchange(exchangeName);
+
+    queue.bind(this.exchange);
+
+    this.exchange &#x3D; exchange;
+  }
+
+  /**
+   * Gets the logger instance.
+   *
+   * @returns {Logger}
+   * @memberof RabbitMqMetricReporter
+   */
+  public getLog(): Logger {
+    return this.options.log;
+  }
+
+  /**
+   * Sets the logger instance.
+   *
+   * @param {Logger} log
+   * @memberof RabbitMqMetricReporter
+   */
+  public setLog(log: Logger): void {
+    this.options.log &#x3D; log;
+  }
+
+  /**
+   * Reports an {@link Event}.
+   *
+   * @param {Event} event
+   * @returns {Promise&lt;TEvent&gt;}
+   * @memberof RabbitMqMetricReporter
+   */
+  public async reportEvent&lt;TEventData, TEvent extends Event&lt;TEventData&gt;&gt;(event: TEvent): Promise&lt;TEvent&gt; {
+    const result &#x3D; this.reportGauge(event, {
+      date: event.getTime(),
+      metrics: [],
+      overallCtx: null,
+      registry: null,
+      type: &quot;gauge&quot;,
+    });
+
+    if (result) {
+      await this.handleResults(null, null, event.getTime(), &quot;gauge&quot;, [{
+        metric: event,
+        result,
+      }]);
     }
 
-    /**
-     * Gets the values for the specified counter metric.
-     *
-     * @static
-     * @param {Counter} counter
-     * @returns {{}}
-     * @memberof RabbitMqMetricReporter
-     */
-    public static getCounterValues(counter: Counter): {} {
-        const count &#x3D; counter.getCount();
-        if (!count || isNaN(count)) {
-            return null;
-        }
-        return { count };
+    return event;
+  }
+
+  /**
+   * Does nothing
+   *
+   * @returns {Promise&lt;void&gt;}
+   * @memberof RabbitMqMetricReporter
+   */
+  public async flushEvents(): Promise&lt;void&gt; {
+  }
+
+  /**
+   * Send the combinations of index and document to the elasticsearch cluster
+   * using the bulk method of the elasticsearch client.
+   *
+   * @protected
+   * @param {MetricRegistry} registry
+   * @param {Date} date
+   * @param {MetricType} type
+   * @param {Array&lt;ReportingResult&lt;any, any[]&gt;&gt;} results
+   * @returns {Promise&lt;void&gt;}
+   * @memberof RabbitMqMetricReporter
+   */
+  protected handleResults(
+    ctx: OverallReportContext,
+    registry: MetricRegistry,
+    date: Date,
+    type: MetricType,
+    results: Array&lt;ReportingResult&lt;any, {}&gt;&gt;): Promise&lt;void&gt; {
+    const message &#x3D; new Amqp.Message(JSON.stringify(results));
+
+    this.exchange.send(message);
+
+    return Promise.resolve();
+  }
+
+  /**
+   * Generalized reporting method of all types of metric instances.
+   * Builds the index configuration document and the metric document.
+   *
+   * @protected
+   * @param {Metric} metric
+   * @param {ReportingContext&lt;Metric&gt;} ctx
+   * @returns {{}}
+   * @memberof RabbitMqMetricReporter
+   */
+  protected reportMetric(metric: Metric, ctx: MetricSetReportContext&lt;Metric&gt;): {} {
+    let values &#x3D; null;
+    if (metric instanceof MonotoneCounter) {
+      values &#x3D; RabbitMqMetricReporter.getMonotoneCounterValues(metric);
+    } else if (metric instanceof Counter) {
+      values &#x3D; RabbitMqMetricReporter.getCounterValues(metric);
+    } else if (metric instanceof Histogram) {
+      values &#x3D; RabbitMqMetricReporter.getHistogramValues(metric);
+    } else if (metric instanceof Meter) {
+      values &#x3D; RabbitMqMetricReporter.getMeterValues(metric);
+    } else if (metric instanceof Timer) {
+      values &#x3D; RabbitMqMetricReporter.getTimerValues(metric);
+    } else {
+      values &#x3D; RabbitMqMetricReporter.getGaugeValue(metric as Gauge&lt;any&gt;);
     }
 
-    /**
-     * Gets the values for the specified {Gauge} metric.
-     *
-     * @static
-     * @param {Gauge&lt;any&gt;} gauge
-     * @returns {{}}
-     * @memberof RabbitMqMetricReporter
-     */
-    public static getGaugeValue(gauge: Gauge&lt;any&gt;): {} {
-        const value &#x3D; gauge.getValue();
-        if ((!value &amp;&amp; value !&#x3D;&#x3D; 0) || Number.isNaN(value)) {
-            return null;
-        }
-        if (typeof value &#x3D;&#x3D;&#x3D; &quot;object&quot;) {
-            return value;
-        }
-        return { value };
-    }
+    const name &#x3D; metric.getName();
+    const group &#x3D; metric.getGroup();
+    const tags &#x3D; this.buildTags(ctx.registry, metric);
+    const timestamp &#x3D; ctx.date;
+    const type &#x3D; ctx.type;
 
-    /**
-     * Gets the values for the specified {Histogram} metric.
-     *
-     * @static
-     * @param {Histogram} histogram
-     * @returns {{}}
-     * @memberof RabbitMqMetricReporter
-     */
-    public static getHistogramValues(histogram: Histogram): {} {
-        const value &#x3D; histogram.getCount();
-        if (!value || isNaN(value)) {
-            return null;
-        }
-        const snapshot &#x3D; histogram.getSnapshot();
-        const values: any &#x3D; {};
+    return { name, group, tags, timestamp, values, type };
+  }
 
-        values[&#x60;count&#x60;] &#x3D; value;
-        values[&#x60;max&#x60;] &#x3D; this.getNumber(snapshot.getMax());
-        values[&#x60;mean&#x60;] &#x3D; this.getNumber(snapshot.getMean());
-        values[&#x60;min&#x60;] &#x3D; this.getNumber(snapshot.getMin());
-        values[&#x60;p50&#x60;] &#x3D; this.getNumber(snapshot.getMedian());
-        values[&#x60;p75&#x60;] &#x3D; this.getNumber(snapshot.get75thPercentile());
-        values[&#x60;p95&#x60;] &#x3D; this.getNumber(snapshot.get95thPercentile());
-        values[&#x60;p98&#x60;] &#x3D; this.getNumber(snapshot.get98thPercentile());
-        values[&#x60;p99&#x60;] &#x3D; this.getNumber(snapshot.get99thPercentile());
-        values[&#x60;p999&#x60;] &#x3D; this.getNumber(snapshot.get999thPercentile());
-        values[&#x60;stddev&#x60;] &#x3D; this.getNumber(snapshot.getStdDev());
+  /**
+   * Calls {@link #reportMetric} with the specified arguments.
+   *
+   * @protected
+   * @param {(MonotoneCounter | Counter)} counter
+   * @param {(ReportingContext&lt;MonotoneCounter | Counter&gt;)} ctx
+   * @returns {{}}
+   * @memberof RabbitMqMetricReporter
+   */
+  protected reportCounter(
+    counter: MonotoneCounter | Counter, ctx: MetricSetReportContext&lt;MonotoneCounter | Counter&gt;): {} {
+    return this.reportMetric(counter, ctx);
+  }
 
-        return values;
-    }
+  /**
+   * Calls {@link #reportMetric} with the specified arguments.
+   *
+   * @protected
+   * @param {Gauge&lt;any&gt;} gauge
+   * @param {ReportingContext&lt;Gauge&lt;any&gt;&gt;} ctx
+   * @returns {{}}
+   * @memberof RabbitMqMetricReporter
+   */
+  protected reportGauge(gauge: Gauge&lt;any&gt;, ctx: MetricSetReportContext&lt;Gauge&lt;any&gt;&gt;): {} {
+    return this.reportMetric(gauge, ctx);
+  }
 
-    /**
-     * Gets the values for the specified {Meter} metric.
-     *
-     * @static
-     * @param {Meter} meter
-     * @returns {{}}
-     * @memberof RabbitMqMetricReporter
-     */
-    public static getMeterValues(meter: Meter): {} {
-        const value &#x3D; meter.getCount();
-        if (!value || isNaN(value)) {
-            return null;
-        }
-        const values: any &#x3D; {};
+  /**
+   * Calls {@link #reportMetric} with the specified arguments.
+   *
+   * @protected
+   * @param {Histogram} histogram
+   * @param {ReportingContext&lt;Histogram&gt;} ctx
+   * @returns {{}}
+   * @memberof RabbitMqMetricReporter
+   */
+  protected reportHistogram(histogram: Histogram, ctx: MetricSetReportContext&lt;Histogram&gt;): {} {
+    return this.reportMetric(histogram, ctx);
+  }
 
-        values[&#x60;count&#x60;] &#x3D; value;
-        values[&#x60;m15_rate&#x60;] &#x3D; this.getNumber(meter.get15MinuteRate());
-        values[&#x60;m1_rate&#x60;] &#x3D; this.getNumber(meter.get1MinuteRate());
-        values[&#x60;m5_rate&#x60;] &#x3D; this.getNumber(meter.get5MinuteRate());
-        values[&#x60;mean_rate&#x60;] &#x3D; this.getNumber(meter.getMeanRate());
+  /**
+   * Calls {@link #reportMetric} with the specified arguments.
+   *
+   * @protected
+   * @param {Meter} meter
+   * @param {ReportingContext&lt;Meter&gt;} ctx
+   * @returns {{}}
+   * @memberof RabbitMqMetricReporter
+   */
+  protected reportMeter(meter: Meter, ctx: MetricSetReportContext&lt;Meter&gt;): {} {
+    return this.reportMetric(meter, ctx);
+  }
 
-        return values;
-    }
-
-    /**
-     * Gets the values for the specified {Timer} metric.
-     *
-     * @static
-     * @param {Timer} timer
-     * @returns {{}}
-     * @memberof RabbitMqMetricReporter
-     */
-    public static getTimerValues(timer: Timer): {} {
-        const value &#x3D; timer.getCount();
-        if (!value || isNaN(value)) {
-            return null;
-        }
-        const snapshot &#x3D; timer.getSnapshot();
-        const values: any &#x3D; {};
-
-        values[&#x60;count&#x60;] &#x3D; value;
-        values[&#x60;m15_rate&#x60;] &#x3D; this.getNumber(timer.get15MinuteRate());
-        values[&#x60;m1_rate&#x60;] &#x3D; this.getNumber(timer.get1MinuteRate());
-        values[&#x60;m5_rate&#x60;] &#x3D; this.getNumber(timer.get5MinuteRate());
-        values[&#x60;max&#x60;] &#x3D; this.getNumber(snapshot.getMax());
-        values[&#x60;mean&#x60;] &#x3D; this.getNumber(snapshot.getMean());
-        values[&#x60;mean_rate&#x60;] &#x3D; this.getNumber(timer.getMeanRate());
-        values[&#x60;min&#x60;] &#x3D; this.getNumber(snapshot.getMin());
-        values[&#x60;p50&#x60;] &#x3D; this.getNumber(snapshot.getMedian());
-        values[&#x60;p75&#x60;] &#x3D; this.getNumber(snapshot.get75thPercentile());
-        values[&#x60;p95&#x60;] &#x3D; this.getNumber(snapshot.get95thPercentile());
-        values[&#x60;p98&#x60;] &#x3D; this.getNumber(snapshot.get98thPercentile());
-        values[&#x60;p99&#x60;] &#x3D; this.getNumber(snapshot.get99thPercentile());
-        values[&#x60;p999&#x60;] &#x3D; this.getNumber(snapshot.get999thPercentile());
-        values[&#x60;stddev&#x60;] &#x3D; this.getNumber(snapshot.getStdDev());
-
-        return values;
-    }
-
-    /**
-     * Either gets 0 or the specifed value.
-     *
-     * @private
-     * @param {number} value
-     * @returns {number}
-     * @memberof RabbitMqMetricReporter
-     */
-    private static getNumber(value: number): number {
-        if (isNaN(value)) {
-            return 0;
-        }
-        return value;
-    }
-
-    /**
-     * Metadata for the logger.
-     *
-     * @private
-     * @type {*}
-     * @memberof RabbitMqMetricReporter
-     */
-    private logMetadata: any;
-
-    /**
-     * RabbitMQ exchange used to do reporting.
-     *
-     * @private
-     * @type {Amqp.Exchange}
-     * @memberof RabbitMqMetricReporter
-     */
-    private exchange: Amqp.Exchange;
-
-
-    /**
-     * Creates an instance of RabbitMqMetricReporter.
-     */
-    public constructor(
-        {
-            connection,
-            exchangeName,
-            queueName,
-            log &#x3D; console,
-            reportInterval &#x3D; 1000,
-            unit &#x3D; MILLISECOND,
-            clock &#x3D; new StdClock(),
-            scheduler &#x3D; setInterval,
-            minReportingTimeout &#x3D; 1,
-            tags &#x3D; new Map(),
-        }: {
-            /**
-             * RabbitMQ connection URI.
-             * @type {string}
-             */
-            connection: string,
-            /**
-             * RabbitMQ exchange name.
-             * @type {string}
-             */
-            exchangeName: string,
-            /**
-             * RabbitMQ queue name.
-             * @type {string}
-             */
-            queueName: string,
-            /**
-             * The logger instance used to report metrics.
-             * @type {Logger}
-             */
-            log?: Logger,
-            /**
-             * Reporting interval in the time-unit of {@link #unit}.
-             * @type {number}
-             */
-            reportInterval?: number;
-            /**
-             * The time-unit of the reporting interval.
-             * @type {TimeUnit}
-             */
-            unit?: TimeUnit;
-            /**
-             * The clock instance used determine the current time.
-             * @type {Clock}
-             */
-            clock?: Clock;
-            /**
-             * The scheduler function used to trigger reporting.
-             * @type {Scheduler}
-             */
-            scheduler?: Scheduler;
-            /**
-             * The timeout in which a metrics gets reported wether it&#x27;s value has changed or not.
-             * @type {number}
-             */
-            minReportingTimeout?: number;
-            /**
-             * Common tags for this reporter instance.
-             * @type {Map&lt;string, string&gt;}
-             */
-            tags?: Map&lt;string, string&gt;;
-        }) {
-        super({
-            connection,
-            exchangeName,
-            queueName,
-            clock,
-            log,
-            minReportingTimeout,
-            reportInterval,
-            scheduler,
-            tags,
-            unit,
-        });
-
-        this.logMetadata &#x3D; {
-            reportInterval,
-            tags,
-            unit,
-        };
-
-        const amqpConnection &#x3D; new Amqp.Connection(connection);
-        const queue &#x3D; amqpConnection.declareQueue(queueName);
-        this.exchange &#x3D; amqpConnection.declareExchange(exchangeName);
-        queue.bind(this.exchange);
-    }
-
-    /**
-     * Gets the logger instance.
-     *
-     * @returns {Logger}
-     * @memberof RabbitMqMetricReporter
-     */
-    public getLog(): Logger {
-        return this.options.log;
-    }
-
-    /**
-     * Sets the logger instance.
-     *
-     * @param {Logger} log
-     * @memberof RabbitMqMetricReporter
-     */
-    public setLog(log: Logger): void {
-        this.options.log &#x3D; log;
-    }
-
-    /**
-     * Reports an {@link Event}.
-     *
-     * @param {Event} event
-     * @returns {Promise&lt;TEvent&gt;}
-     * @memberof RabbitMqMetricReporter
-     */
-    public async reportEvent&lt;TEventData, TEvent extends Event&lt;TEventData&gt;&gt;(event: TEvent): Promise&lt;TEvent&gt; {
-        const result &#x3D; this.reportGauge(event, {
-            date: event.getTime(),
-            metrics: [],
-            overallCtx: null,
-            registry: null,
-            type: &quot;gauge&quot;,
-        });
-
-        if (result) {
-            await this.handleResults(null, null, event.getTime(), &quot;gauge&quot;, [{
-                metric: event,
-                result,
-            }]);
-        }
-
-        return event;
-    }
-
-    /**
-     * Does nothing
-     *
-     * @returns {Promise&lt;void&gt;}
-     * @memberof RabbitMqMetricReporter
-     */
-    public async flushEvents(): Promise&lt;void&gt; {
-    }
-
-    /**
-     * Send the combinations of index and document to the elasticsearch cluster
-     * using the bulk method of the elasticsearch client.
-     *
-     * @protected
-     * @param {MetricRegistry} registry
-     * @param {Date} date
-     * @param {MetricType} type
-     * @param {Array&lt;ReportingResult&lt;any, any[]&gt;&gt;} results
-     * @returns {Promise&lt;void&gt;}
-     * @memberof RabbitMqMetricReporter
-     */
-    protected handleResults(
-        ctx: OverallReportContext,
-        registry: MetricRegistry,
-        date: Date,
-        type: MetricType,
-        results: Array&lt;ReportingResult&lt;any, {}&gt;&gt;
-    ): Promise&lt;void&gt; {
-        const message &#x3D; new Amqp.Message(JSON.stringify(results));
-
-        this.exchange.send(message);
-
-        return Promise.resolve();
-    }
-
-    /**
-     * Generalized reporting method of all types of metric instances.
-     * Builds the index configuration document and the metric document.
-     *
-     * @protected
-     * @param {Metric} metric
-     * @param {ReportingContext&lt;Metric&gt;} ctx
-     * @returns {{}}
-     * @memberof RabbitMqMetricReporter
-     */
-    protected reportMetric(metric: Metric, ctx: MetricSetReportContext&lt;Metric&gt;): {} {
-        let values &#x3D; null;
-        if (metric instanceof MonotoneCounter) {
-            values &#x3D; RabbitMqMetricReporter.getMonotoneCounterValues(metric);
-        } else if (metric instanceof Counter) {
-            values &#x3D; RabbitMqMetricReporter.getCounterValues(metric);
-        } else if (metric instanceof Histogram) {
-            values &#x3D; RabbitMqMetricReporter.getHistogramValues(metric);
-        } else if (metric instanceof Meter) {
-            values &#x3D; RabbitMqMetricReporter.getMeterValues(metric);
-        } else if (metric instanceof Timer) {
-            values &#x3D; RabbitMqMetricReporter.getTimerValues(metric);
-        } else {
-            values &#x3D; RabbitMqMetricReporter.getGaugeValue(metric as Gauge&lt;any&gt;);
-        }
-
-        const name &#x3D; metric.getName();
-        const group &#x3D; metric.getGroup();
-        const tags &#x3D; this.buildTags(ctx.registry, metric);
-        const timestamp &#x3D; ctx.date;
-        const type &#x3D; ctx.type;
-
-        return { name, group, tags, timestamp, values, type };
-    }
-
-    /**
-     * Calls {@link #reportMetric} with the specified arguments.
-     *
-     * @protected
-     * @param {(MonotoneCounter | Counter)} counter
-     * @param {(ReportingContext&lt;MonotoneCounter | Counter&gt;)} ctx
-     * @returns {{}}
-     * @memberof RabbitMqMetricReporter
-     */
-    protected reportCounter(
-        counter: MonotoneCounter | Counter, ctx: MetricSetReportContext&lt;MonotoneCounter | Counter&gt;): {} {
-        return this.reportMetric(counter, ctx);
-    }
-
-    /**
-     * Calls {@link #reportMetric} with the specified arguments.
-     *
-     * @protected
-     * @param {Gauge&lt;any&gt;} gauge
-     * @param {ReportingContext&lt;Gauge&lt;any&gt;&gt;} ctx
-     * @returns {{}}
-     * @memberof RabbitMqMetricReporter
-     */
-    protected reportGauge(gauge: Gauge&lt;any&gt;, ctx: MetricSetReportContext&lt;Gauge&lt;any&gt;&gt;): {} {
-        return this.reportMetric(gauge, ctx);
-    }
-
-    /**
-     * Calls {@link #reportMetric} with the specified arguments.
-     *
-     * @protected
-     * @param {Histogram} histogram
-     * @param {ReportingContext&lt;Histogram&gt;} ctx
-     * @returns {{}}
-     * @memberof RabbitMqMetricReporter
-     */
-    protected reportHistogram(histogram: Histogram, ctx: MetricSetReportContext&lt;Histogram&gt;): {} {
-        return this.reportMetric(histogram, ctx);
-    }
-
-    /**
-     * Calls {@link #reportMetric} with the specified arguments.
-     *
-     * @protected
-     * @param {Meter} meter
-     * @param {ReportingContext&lt;Meter&gt;} ctx
-     * @returns {{}}
-     * @memberof RabbitMqMetricReporter
-     */
-    protected reportMeter(meter: Meter, ctx: MetricSetReportContext&lt;Meter&gt;): {} {
-        return this.reportMetric(meter, ctx);
-    }
-
-    /**
-     * Calls {@link #reportMetric} with the specified arguments.
-     *
-     * @protected
-     * @param {Timer} timer
-     * @param {ReportingContext&lt;Timer&gt;} ctx
-     * @returns {{}}
-     * @memberof RabbitMqMetricReporter
-     */
-    protected reportTimer(timer: Timer, ctx: MetricSetReportContext&lt;Timer&gt;): {} {
-        return this.reportMetric(timer, ctx);
-    }
-}</code></pre>
+  /**
+   * Calls {@link #reportMetric} with the specified arguments.
+   *
+   * @protected
+   * @param {Timer} timer
+   * @param {ReportingContext&lt;Timer&gt;} ctx
+   * @returns {{}}
+   * @memberof RabbitMqMetricReporter
+   */
+  protected reportTimer(timer: Timer, ctx: MetricSetReportContext&lt;Timer&gt;): {} {
+    return this.reportMetric(timer, ctx);
+  }
+}
+</code></pre>
     </div>
 </div>
 
