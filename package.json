@@ -1,0 +1,32 @@
+{
+  "name": "inspector-rabbitmq",
+  "version": "1.0.0",
+  "description": "RabbitMQ metric reporter for nodejs",
+  "main": "./build/lib/metrics/index.js",
+  "typings": "./build/lib/metrics/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ttous/inspector-rabbitmq.git"
+  },
+  "keywords": [
+    "inspector",
+    "rabbitmq",
+    "metrics"
+  ],
+  "dependencies": {
+    "amqp-ts": "^1.4.0",
+    "typescript": "^3.3.3"
+  },
+  "peerDependencies": {
+    "inspector-metrics": ">=1.16.x"
+  },
+  "author": "ttous & doubret & rstiller",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ttous/inspector-rabbitmq/issues"
+  },
+  "homepage": "https://github.com/ttous/inspector-rabbitmq#readme"
+}
