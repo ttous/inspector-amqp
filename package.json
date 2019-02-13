@@ -18,6 +18,7 @@
   ],
   "dependencies": {
     "amqp-ts": "^1.4.0",
+    "inspector-metrics": "^1.17.3",
     "typescript": "^3.3.3"
   },
   "peerDependencies": {
