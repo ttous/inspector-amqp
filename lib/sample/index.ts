@@ -8,15 +8,14 @@ const reporter: AmqpMetricReporter = new AmqpMetricReporter({
   queueName: "queue",
 });
 
-function createEvent<T>(name: string, data: T): Event<T> {
-  return new Event<T>(name);
-}
-
+// start reporter
 reporter.start().then((r) => {
-  const event = createEvent("test", {
-    int: 123,
-    string: "toto",
-  });
+  const event = new Event<{}>("test")
+    .setValue({
+      int: 123,
+      string: "toto",
+    });
 
+  // send event
   r.reportEvent(event);
 });
