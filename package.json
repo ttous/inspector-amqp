@@ -13,6 +13,7 @@
     "lint": "tslint -c tslint.json lib/**/*.ts test/**/*.ts",
     "prepublishDocs": "npm run compodoc",
     "prepublishOnly": "npm run build",
+    "sample": "ts-node lib/sample/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -36,6 +37,7 @@
     "@types/node": "^11.9.3",
     "compodoc": "0.0.41",
     "npm-check": "^5.9.0",
+    "ts-node": "^8.0.2",
     "tslint": "^5.12.1",
     "typescript": "^3.3.3"
   },

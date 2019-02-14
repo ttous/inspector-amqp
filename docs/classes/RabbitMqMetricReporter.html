@@ -74,6 +74,9 @@
             
             
             
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                    </li>
             
                     <li class="chapter">
                         <a data-type="chapter-link" href="../coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
@@ -150,6 +153,9 @@
                    
                    
                    
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                           </li>
                    
                            <li class="chapter">
                                <a data-type="chapter-link" href="../coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
@@ -1455,7 +1461,7 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
     const queue &#x3D; amqpConnection.declareQueue(queueName);
     const exchange &#x3D; amqpConnection.declareExchange(exchangeName);
 
-    queue.bind(this.exchange);
+    queue.bind(exchange);
 
     this.exchange &#x3D; exchange;
   }

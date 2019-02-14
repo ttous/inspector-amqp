@@ -291,7 +291,7 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter<RabbitMqMetr
     const queue = amqpConnection.declareQueue(queueName);
     const exchange = amqpConnection.declareExchange(exchangeName);
 
-    queue.bind(this.exchange);
+    queue.bind(exchange);
 
     this.exchange = exchange;
   }

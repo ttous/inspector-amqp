@@ -74,6 +74,9 @@
             
             
             
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="./miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                    </li>
             
                     <li class="chapter">
                         <a data-type="chapter-link" href="./coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
@@ -150,6 +153,9 @@
                    
                    
                    
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="./miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                           </li>
                    
                            <li class="chapter">
                                <a data-type="chapter-link" href="./coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
@@ -169,7 +175,9 @@
                <div class="content readme">
                    <div class="content-data">
 <h1 id="inspector-rabbitmq">inspector-rabbitmq</h1>
-
+<h2 id="running-rabbitmq-locally">running rabbitmq locally</h2>
+<pre><code class="hljs undefined">docker run -d --hostname my-rabbit --name my-rabbit -p 4369:4369 -p 5671:5671 -p 5672:5672 -p 15672:15672 rabbitmq<br>docker exec my-rabbit rabbitmq-plugins enable rabbitmq_management</code></pre><h2 id="using-the-reporter">using the reporter</h2>
+<pre><code class="hljs undefined">docker run -d --hostname my-rabbit --name my-rabbit -p 4369:4369 -p 5671:5671 -p 5672:5672 -p 15672:15672 rabbitmq<br>docker exec my-rabbit rabbitmq-plugins enable rabbitmq_management</code></pre>
 
 
 
