@@ -1,8 +1,8 @@
 import { Event } from "inspector-metrics";
-import { RabbitMqMetricReporter } from "../metrics";
+import { AmqpMetricReporter } from "../metrics";
 
-// instance the rabbitmq reporter
-const reporter: RabbitMqMetricReporter = new RabbitMqMetricReporter({
+// instance the Amqp reporter
+const reporter: AmqpMetricReporter = new AmqpMetricReporter({
   connection: "amqp://localhost",
   exchangeName: "exchange",
   queueName: "queue",

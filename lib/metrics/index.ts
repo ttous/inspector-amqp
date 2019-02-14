@@ -1,3 +1,3 @@
 import "source-map-support/register";
 
-export * from "./RabbitMqMetricReporter";
+export * from "./AmqpMetricReporter";

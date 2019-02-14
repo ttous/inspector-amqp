@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>inspector-rabbitmq documentation</title>
+        <title>inspector-amqp documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,7 +13,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">inspector-rabbitmq documentation</a>
+            <a href="../" class="navbar-brand">inspector-amqp documentation</a>
             <button type="button" class="btn btn-default btn-menu fa fa-bars" id="btn-menu"></button>
         </div>
 
@@ -26,7 +26,7 @@
                 <ul class="list">
             
                     <li class="title">
-                        <a href="../">inspector-rabbitmq documentation</a>
+                        <a href="../">inspector-amqp documentation</a>
                     </li>
             
                     <li class="divider"></li>
@@ -65,7 +65,7 @@
                                 id="xs-classes-links"
                             >
                                 <li class="link">
-                                    <a href="../classes/RabbitMqMetricReporter.html"  class="active" >RabbitMqMetricReporter</a>
+                                    <a href="../classes/AmqpMetricReporter.html"  class="active" >AmqpMetricReporter</a>
                                 </li>
                         </ul>
                     </li>
@@ -102,7 +102,7 @@
                        <ul class="list">
                    
                            <li class="title">
-                               <a href="../">inspector-rabbitmq documentation</a>
+                               <a href="../">inspector-amqp documentation</a>
                            </li>
                    
                            <li class="divider"></li>
@@ -144,7 +144,7 @@
                                        id="classes-links"
                    >
                                        <li class="link">
-                                           <a href="../classes/RabbitMqMetricReporter.html"  class="active" >RabbitMqMetricReporter</a>
+                                           <a href="../classes/AmqpMetricReporter.html"  class="active" >AmqpMetricReporter</a>
                                        </li>
                                </ul>
                            </li>
@@ -182,7 +182,7 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li>RabbitMqMetricReporter</li>
+  <li>AmqpMetricReporter</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -200,7 +200,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>lib/metrics/RabbitMqMetricReporter.ts</code>
+            <code>lib/metrics/AmqpMetricReporter.ts</code>
         </p>
 
 
@@ -216,7 +216,7 @@
             
                             <tr>
                                 <td class="col-md-4">
-                                        <div class="io-description"><p>Creates an instance of RabbitMqMetricReporter.</p>
+                                        <div class="io-description"><p>Creates an instance of AmqpMetricReporter.</p>
             </div>
                                 </td>
                             </tr>
@@ -1159,7 +1159,7 @@
                             </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-description"><p>RabbitMQ exchange used to do reporting.</p>
+                                    <div class="io-description"><p>Amqp exchange used to do reporting.</p>
             </div>
                                 </td>
                             </tr>
@@ -1196,12 +1196,12 @@ import {
   TimeUnit,
 } from &quot;inspector-metrics&quot;;
 
-export interface RabbitMqMetricReporterOptions extends ScheduledMetricReporterOptions {
+export interface AmqpMetricReporterOptions extends ScheduledMetricReporterOptions {
   /**
    * Logger instance used to report errors.
    *
    * @type {Logger}
-   * @memberof RabbitMqMetricReporterOptions
+   * @memberof AmqpMetricReporterOptions
    */
   log: Logger;
 
@@ -1211,14 +1211,14 @@ export interface RabbitMqMetricReporterOptions extends ScheduledMetricReporterOp
   queueName: string;
 }
 
-export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqMetricReporterOptions, {}&gt; {
+export class AmqpMetricReporter extends ScheduledMetricReporter&lt;AmqpMetricReporterOptions, {}&gt; {
   /**
    * Gets the values for the specified monotone counter metric.
    *
    * @static
    * @param {MonotoneCounter} counter
    * @returns {{}}
-   * @memberof RabbitMqMetricReporter
+   * @memberof AmqpMetricReporter
    */
   public static getMonotoneCounterValues(counter: MonotoneCounter): {} {
     const count &#x3D; counter.getCount();
@@ -1234,7 +1234,7 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
    * @static
    * @param {Counter} counter
    * @returns {{}}
-   * @memberof RabbitMqMetricReporter
+   * @memberof AmqpMetricReporter
    */
   public static getCounterValues(counter: Counter): {} {
     const count &#x3D; counter.getCount();
@@ -1250,7 +1250,7 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
    * @static
    * @param {Gauge&lt;any&gt;} gauge
    * @returns {{}}
-   * @memberof RabbitMqMetricReporter
+   * @memberof AmqpMetricReporter
    */
   public static getGaugeValue(gauge: Gauge&lt;any&gt;): {} {
     const value &#x3D; gauge.getValue();
@@ -1269,7 +1269,7 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
    * @static
    * @param {Histogram} histogram
    * @returns {{}}
-   * @memberof RabbitMqMetricReporter
+   * @memberof AmqpMetricReporter
    */
   public static getHistogramValues(histogram: Histogram): {} {
     const value &#x3D; histogram.getCount();
@@ -1300,7 +1300,7 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
    * @static
    * @param {Meter} meter
    * @returns {{}}
-   * @memberof RabbitMqMetricReporter
+   * @memberof AmqpMetricReporter
    */
   public static getMeterValues(meter: Meter): {} {
     const value &#x3D; meter.getCount();
@@ -1324,7 +1324,7 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
    * @static
    * @param {Timer} timer
    * @returns {{}}
-   * @memberof RabbitMqMetricReporter
+   * @memberof AmqpMetricReporter
    */
   public static getTimerValues(timer: Timer): {} {
     const value &#x3D; timer.getCount();
@@ -1359,7 +1359,7 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
    * @private
    * @param {number} value
    * @returns {number}
-   * @memberof RabbitMqMetricReporter
+   * @memberof AmqpMetricReporter
    */
   private static getNumber(value: number): number {
     if (isNaN(value)) {
@@ -1369,16 +1369,16 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
   }
 
   /**
-   * RabbitMQ exchange used to do reporting.
+   * Amqp exchange used to do reporting.
    *
    * @private
    * @type {Amqp.Exchange}
-   * @memberof RabbitMqMetricReporter
+   * @memberof AmqpMetricReporter
    */
   private exchange: Amqp.Exchange;
 
   /**
-   * Creates an instance of RabbitMqMetricReporter.
+   * Creates an instance of AmqpMetricReporter.
    */
   public constructor(
     {
@@ -1394,17 +1394,17 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
       tags &#x3D; new Map(),
     }: {
       /**
-       * RabbitMQ connection URI.
+       * Amqp connection URI.
        * @type {string}
        */
       connection: string,
       /**
-       * RabbitMQ exchange name.
+       * Amqp exchange name.
        * @type {string}
        */
       exchangeName: string,
       /**
-       * RabbitMQ queue name.
+       * Amqp queue name.
        * @type {string}
        */
       queueName: string,
@@ -1470,7 +1470,7 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
    * Gets the logger instance.
    *
    * @returns {Logger}
-   * @memberof RabbitMqMetricReporter
+   * @memberof AmqpMetricReporter
    */
   public getLog(): Logger {
     return this.options.log;
@@ -1480,7 +1480,7 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
    * Sets the logger instance.
    *
    * @param {Logger} log
-   * @memberof RabbitMqMetricReporter
+   * @memberof AmqpMetricReporter
    */
   public setLog(log: Logger): void {
     this.options.log &#x3D; log;
@@ -1491,7 +1491,7 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
    *
    * @param {Event} event
    * @returns {Promise&lt;TEvent&gt;}
-   * @memberof RabbitMqMetricReporter
+   * @memberof AmqpMetricReporter
    */
   public async reportEvent&lt;TEventData, TEvent extends Event&lt;TEventData&gt;&gt;(event: TEvent): Promise&lt;TEvent&gt; {
     const result &#x3D; this.reportGauge(event, {
@@ -1516,7 +1516,7 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
    * Does nothing
    *
    * @returns {Promise&lt;void&gt;}
-   * @memberof RabbitMqMetricReporter
+   * @memberof AmqpMetricReporter
    */
   public async flushEvents(): Promise&lt;void&gt; {
   }
@@ -1531,7 +1531,7 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
    * @param {MetricType} type
    * @param {Array&lt;ReportingResult&lt;any, any[]&gt;&gt;} results
    * @returns {Promise&lt;void&gt;}
-   * @memberof RabbitMqMetricReporter
+   * @memberof AmqpMetricReporter
    */
   protected handleResults(
     ctx: OverallReportContext,
@@ -1554,22 +1554,22 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
    * @param {Metric} metric
    * @param {ReportingContext&lt;Metric&gt;} ctx
    * @returns {{}}
-   * @memberof RabbitMqMetricReporter
+   * @memberof AmqpMetricReporter
    */
   protected reportMetric(metric: Metric, ctx: MetricSetReportContext&lt;Metric&gt;): {} {
     let values &#x3D; null;
     if (metric instanceof MonotoneCounter) {
-      values &#x3D; RabbitMqMetricReporter.getMonotoneCounterValues(metric);
+      values &#x3D; AmqpMetricReporter.getMonotoneCounterValues(metric);
     } else if (metric instanceof Counter) {
-      values &#x3D; RabbitMqMetricReporter.getCounterValues(metric);
+      values &#x3D; AmqpMetricReporter.getCounterValues(metric);
     } else if (metric instanceof Histogram) {
-      values &#x3D; RabbitMqMetricReporter.getHistogramValues(metric);
+      values &#x3D; AmqpMetricReporter.getHistogramValues(metric);
     } else if (metric instanceof Meter) {
-      values &#x3D; RabbitMqMetricReporter.getMeterValues(metric);
+      values &#x3D; AmqpMetricReporter.getMeterValues(metric);
     } else if (metric instanceof Timer) {
-      values &#x3D; RabbitMqMetricReporter.getTimerValues(metric);
+      values &#x3D; AmqpMetricReporter.getTimerValues(metric);
     } else {
-      values &#x3D; RabbitMqMetricReporter.getGaugeValue(metric as Gauge&lt;any&gt;);
+      values &#x3D; AmqpMetricReporter.getGaugeValue(metric as Gauge&lt;any&gt;);
     }
 
     const name &#x3D; metric.getName();
@@ -1588,7 +1588,7 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
    * @param {(MonotoneCounter | Counter)} counter
    * @param {(ReportingContext&lt;MonotoneCounter | Counter&gt;)} ctx
    * @returns {{}}
-   * @memberof RabbitMqMetricReporter
+   * @memberof AmqpMetricReporter
    */
   protected reportCounter(
     counter: MonotoneCounter | Counter, ctx: MetricSetReportContext&lt;MonotoneCounter | Counter&gt;): {} {
@@ -1602,7 +1602,7 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
    * @param {Gauge&lt;any&gt;} gauge
    * @param {ReportingContext&lt;Gauge&lt;any&gt;&gt;} ctx
    * @returns {{}}
-   * @memberof RabbitMqMetricReporter
+   * @memberof AmqpMetricReporter
    */
   protected reportGauge(gauge: Gauge&lt;any&gt;, ctx: MetricSetReportContext&lt;Gauge&lt;any&gt;&gt;): {} {
     return this.reportMetric(gauge, ctx);
@@ -1615,7 +1615,7 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
    * @param {Histogram} histogram
    * @param {ReportingContext&lt;Histogram&gt;} ctx
    * @returns {{}}
-   * @memberof RabbitMqMetricReporter
+   * @memberof AmqpMetricReporter
    */
   protected reportHistogram(histogram: Histogram, ctx: MetricSetReportContext&lt;Histogram&gt;): {} {
     return this.reportMetric(histogram, ctx);
@@ -1628,7 +1628,7 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
    * @param {Meter} meter
    * @param {ReportingContext&lt;Meter&gt;} ctx
    * @returns {{}}
-   * @memberof RabbitMqMetricReporter
+   * @memberof AmqpMetricReporter
    */
   protected reportMeter(meter: Meter, ctx: MetricSetReportContext&lt;Meter&gt;): {} {
     return this.reportMetric(meter, ctx);
@@ -1641,7 +1641,7 @@ export class RabbitMqMetricReporter extends ScheduledMetricReporter&lt;RabbitMqM
    * @param {Timer} timer
    * @param {ReportingContext&lt;Timer&gt;} ctx
    * @returns {{}}
-   * @memberof RabbitMqMetricReporter
+   * @memberof AmqpMetricReporter
    */
   protected reportTimer(timer: Timer, ctx: MetricSetReportContext&lt;Timer&gt;): {} {
     return this.reportMetric(timer, ctx);
