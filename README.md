@@ -43,7 +43,7 @@ docker run -d --hostname my-rabbit --name my-rabbit -p 4369:4369 -p 5671:5671 -p
 docker exec my-rabbit rabbitmq-plugins enable rabbitmq_management
 ```
 
-### releasing / publish docs
+## releasing / publish docs / publish package
 
 ```text
 # check functionality
