@@ -11,6 +11,7 @@
     "compodoc": "compodoc lib -p tsconfig.json --output docs --disableGraph --unitTestCoverage ./coverage/coverage-summary.json",
     "deps": "npm-check --ignore @types/* --no-spinner --no-emoji --no-color",
     "lint": "tslint -c tslint.json lib/**/*.ts test/**/*.ts",
+    "publishDocs": "cd docs && git add --all . && git commit -m 'Deploy to gh-pages' && git push origin gh-pages && cd ..",
     "prepublishDocs": "npm run compodoc",
     "prepublishOnly": "npm run build",
     "sample": "ts-node lib/sample/index.ts",
@@ -44,14 +45,18 @@
   "peerDependencies": {
     "inspector-metrics": ">=1.16.x"
   },
-  "author": "ttous & doubret & rstiller",
+  "author": "ttous",
+  "contributors": [
+    "ttous",
+    "doubret",
+    "rstiller"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ttous/inspector-amqp/issues"
   },
   "files": [
-    "build",
-    "docs"
+    "build"
   ],
-  "homepage": "https://github.com/ttous/inspector-amqp#readme"
+  "homepage": "https://ttous.github.io/inspector-amqp/"
 }
