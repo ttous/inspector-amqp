@@ -36,13 +36,13 @@
                         <a data-type="chapter-link" href="./"><span class="fa fa-home"></span>Getting started</a>
                         <ul class="links">
                                 <li class="link">
-                                    <a href="./"  class="active" ><span class="fa fa-file-text-o"></span>README</a>
+                                    <a href="./" ><span class="fa fa-file-text-o"></span>README</a>
                                 </li>
                                 <li class="link">
-                                    <a  href="./overview.html" 
+                                    <a 
                                         
                                          href="./overview.html" 
-                                        
+                                         href="./overview.html" 
                                         >
                                         <span class="fa fa-th"></span>Overview
                                     </a>
@@ -115,13 +115,13 @@
                                <a data-type="chapter-link" href="./"><span class="fa fa-home"></span>Getting started</a>
                                <ul class="links">
                                        <li class="link">
-                                           <a href="./"  class="active" ><span class="fa fa-file-text-o"></span>README</a>
+                                           <a href="./" ><span class="fa fa-file-text-o"></span>README</a>
                                        </li>
                                        <li class="link">
-                                           <a  href="./overview.html" 
+                                           <a 
                                                
                                                 href="./overview.html" 
-                                               
+                                                href="./overview.html" 
                                                >
                                                <span class="fa fa-th"></span>Overview
                                            </a>
@@ -172,21 +172,14 @@
                    
                    </nav>
                </div>
-               <div class="content readme">
+               <div class="content modules">
                    <div class="content-data">
-<h1 id="inspector-amqp">inspector-amqp</h1>
-<p>Typescript <a href="https://github.com/rstiller/inspector-metrics/blob/master/lib/metrics/metric-reporter.ts">Metrics Reporter</a> for <a href="https://www.amqp.org/">AMQP</a>.</p>
-<p>This library is made for <a href="https://github.com/rstiller/inspector-metrics">inspector-metrics</a> node module and is meant to be used with <code>typescript</code> / <code>nodejs</code>.</p>
-<p>It uses <a href="https://github.com/abreits/amqp-ts">amqp-ts</a> as amqp client.</p>
-<h2 id="install">install</h2>
-<p><code>npm install --save inspector-amqp</code></p>
-<h2 id="basic-usage">basic usage</h2>
-<pre><code class="hljs typescript"><span class="hljs-keyword">import</span> { Event } <span class="hljs-keyword">from</span> <span class="hljs-string">"inspector-metrics"</span>;<br><span class="hljs-keyword">import</span> { AmqpMetricReporter } <span class="hljs-keyword">from</span> <span class="hljs-string">"../metrics"</span>;<br><br><span class="hljs-comment">// instance the Amqp reporter</span><br><span class="hljs-keyword">const</span> reporter: AmqpMetricReporter = <span class="hljs-keyword">new</span> AmqpMetricReporter({<br>  connection: <span class="hljs-string">"amqp://localhost"</span>,<br>  exchangeName: <span class="hljs-string">"exchange"</span>,<br>  queueName: <span class="hljs-string">"queue"</span>,<br>});<br><br><span class="hljs-comment">// start reporter</span><br>reporter.start().then(<span class="hljs-function">(<span class="hljs-params">r</span>) =&gt;</span> {<br>  <span class="hljs-keyword">const</span> event = <span class="hljs-keyword">new</span> Event&lt;{}&gt;(<span class="hljs-string">"test"</span>)<br>    .setValue({<br>      int: <span class="hljs-number">123</span>,<br>      <span class="hljs-built_in">string</span>: <span class="hljs-string">"toto"</span>,<br>    });<br><br>  <span class="hljs-comment">// send event</span><br>  r.reportEvent(event);<br>});</code></pre><h2 id="running-rabbitmq-locally-using-docker-">running rabbitmq locally (using docker)</h2>
-<pre><code class="hljs undefined">docker run -d --hostname my-rabbit --name my-rabbit -p 4369:4369 -p 5671:5671 -p 5672:5672 -p 15672:15672 rabbitmq<br>docker exec my-rabbit rabbitmq-plugins enable rabbitmq_management</code></pre><h3 id="releasing-publish-docs">releasing / publish docs</h3>
-<pre><code class="hljs text"># check functionality<br>npm i<br>npm run build<br><br># release<br>git commit -am "release of a.b.c"<br>git push<br>git tag va.b.c<br>git push --tags<br><br># publish docs<br>rm -fr docs/<br>git branch -D gh-pages<br>git worktree prune<br>git worktree list<br>git worktree add -b gh-pages docs origin/gh-pages<br>npm run publishDocs<br><br># publish package<br>npm publish</code></pre><h2 id="license">License</h2>
-<p><a href="https://www.opensource.org/licenses/mit-license.php">MIT</a></p>
 
-
+<h3>Modules</h3>
+<div class="container-fluid modules">
+    <div class="row">
+    </div>
+</div>
 
 
 
