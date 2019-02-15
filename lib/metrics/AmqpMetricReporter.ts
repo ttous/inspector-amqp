@@ -22,9 +22,15 @@ import {
   ScheduledMetricReporterOptions,
   Scheduler,
   StdClock,
+  Tags,
   Timer,
   TimeUnit,
 } from "inspector-metrics";
+
+/**
+ * Interface for building a message for a metric.
+ */
+export type MetricMessageBuilder = (registry: MetricRegistry, metric: Metric, type: MetricType, date: Date, tags: Tags) => Amqp.Message;
 
 export interface AmqpMetricReporterOptions extends ScheduledMetricReporterOptions {
   /**
@@ -39,9 +45,51 @@ export interface AmqpMetricReporterOptions extends ScheduledMetricReporterOption
   connection: string;
   exchangeName: string;
   queueName: string;
+  
+  /**
+   * Used to build the amqp message for a metric.
+   * @type {MetricMessageBuilder}
+   */
+  metricMessageBuilder: MetricMessageBuilder;
 }
 
-export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReporterOptions, {}> {
+export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReporterOptions, Amqp.Message> {
+  /**
+   * Returns a {@link MetricMessageBuilder} that builds an Amqp.Message for a metric.
+   *
+   * @static
+   * @returns {MetricDocumentBuilder}
+   * @memberof ElasticsearchMetricReporter
+   */
+  public static defaultMessageBuilder(): MetricMessageBuilder {
+    return (registry: MetricRegistry, metric: Metric, type: MetricType, timestamp: Date, tags: Tags) => {
+      let values = null;
+
+      if (metric instanceof MonotoneCounter) {
+        values = AmqpMetricReporter.getMonotoneCounterValues(metric);
+      } else if (metric instanceof Counter) {
+        values = AmqpMetricReporter.getCounterValues(metric);
+      } else if (metric instanceof Histogram) {
+        values = AmqpMetricReporter.getHistogramValues(metric);
+      } else if (metric instanceof Meter) {
+        values = AmqpMetricReporter.getMeterValues(metric);
+      } else if (metric instanceof Timer) {
+        values = AmqpMetricReporter.getTimerValues(metric);
+      } else {
+        values = AmqpMetricReporter.getGaugeValue(metric as Gauge<any>);
+      }
+
+      if (values === null) {
+        return null;
+      }
+
+      const name = metric.getName();
+      const group = metric.getGroup();
+
+      return new Amqp.Message(JSON.stringify({ name, group, timestamp, type, tags, values }));
+    };
+  }
+
   /**
    * Gets the values for the specified monotone counter metric.
    *
@@ -50,7 +98,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  public static getMonotoneCounterValues(counter: MonotoneCounter): {} {
+  public static getMonotoneCounterValues(counter: MonotoneCounter): { count: number } {
     const count = counter.getCount();
     if (!count || isNaN(count)) {
       return null;
@@ -66,7 +114,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  public static getCounterValues(counter: Counter): {} {
+  public static getCounterValues(counter: Counter): { count: number } {
     const count = counter.getCount();
     if (!count || isNaN(count)) {
       return null;
@@ -101,7 +149,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  public static getHistogramValues(histogram: Histogram): {} {
+  public static getHistogramValues(histogram: Histogram): {/* todo : type */ } {
     const value = histogram.getCount();
     if (!value || isNaN(value)) {
       return null;
@@ -132,7 +180,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  public static getMeterValues(meter: Meter): {} {
+  public static getMeterValues(meter: Meter): {/* todo : type */ } {
     const value = meter.getCount();
     if (!value || isNaN(value)) {
       return null;
@@ -156,7 +204,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  public static getTimerValues(timer: Timer): {} {
+  public static getTimerValues(timer: Timer): {/* todo : type */ } {
     const value = timer.getCount();
     if (!value || isNaN(value)) {
       return null;
@@ -212,17 +260,23 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    */
   public constructor(
     {
+      clock = new StdClock(),
       connection,
       exchangeName,
-      queueName,
       log = console,
-      reportInterval = 1000,
-      unit = MILLISECOND,
-      clock = new StdClock(),
-      scheduler = setInterval,
+      metricMessageBuilder = AmqpMetricReporter.defaultMessageBuilder(),
       minReportingTimeout = 1,
+      queueName,
+      reportInterval = 1000,
+      scheduler = setInterval,
       tags = new Map(),
+      unit = MILLISECOND,
     }: {
+      /**
+       * The clock instance used determine the current time.
+       * @type {Clock}
+       */
+      clock?: Clock;
       /**
        * Amqp connection URI.
        * @type {string}
@@ -234,51 +288,52 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
        */
       exchangeName: string,
       /**
-       * Amqp queue name.
-       * @type {string}
-       */
-      queueName: string,
-      /**
        * The logger instance used to report metrics.
        * @type {Logger}
        */
       log?: Logger,
       /**
-       * Reporting interval in the time-unit of {@link #unit}.
-       * @type {number}
+       * Used to build the amqp message for a metric.
+       * @type {MetricMessageBuilder}
        */
-      reportInterval?: number;
-      /**
-       * The time-unit of the reporting interval.
-       * @type {TimeUnit}
-       */
-      unit?: TimeUnit;
-      /**
-       * The clock instance used determine the current time.
-       * @type {Clock}
-       */
-      clock?: Clock;
-      /**
-       * The scheduler function used to trigger reporting.
-       * @type {Scheduler}
-       */
-      scheduler?: Scheduler;
+      metricMessageBuilder?: MetricMessageBuilder,
       /**
        * The timeout in which a metrics gets reported wether it's value has changed or not.
        * @type {number}
        */
       minReportingTimeout?: number;
       /**
+       * Amqp queue name.
+       * @type {string}
+       */
+      queueName: string,
+      /**
+       * Reporting interval in the time-unit of {@link #unit}.
+       * @type {number}
+       */
+      reportInterval?: number;
+      /**
+       * The scheduler function used to trigger reporting.
+       * @type {Scheduler}
+       */
+      scheduler?: Scheduler;
+      /**
        * Common tags for this reporter instance.
        * @type {Map<string, string>}
        */
       tags?: Map<string, string>;
+      /**
+       * The time-unit of the reporting interval.
+       * @type {TimeUnit}
+       */
+      unit?: TimeUnit;
     }) {
     super({
       clock,
       connection,
       exchangeName,
       log,
+      metricMessageBuilder,
       minReportingTimeout,
       queueName,
       reportInterval,
@@ -363,15 +418,12 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {Promise<void>}
    * @memberof AmqpMetricReporter
    */
-  protected handleResults(
-    ctx: OverallReportContext,
-    registry: MetricRegistry,
-    date: Date,
-    type: MetricType,
-    results: Array<ReportingResult<any, {}>>): Promise<void> {
-    const message = new Amqp.Message(JSON.stringify(results));
-
-    this.exchange.send(message);
+  protected handleResults(ctx: OverallReportContext, registry: MetricRegistry, date: Date, type: MetricType, results: Array<ReportingResult<any, Amqp.Message>>): Promise<void> {
+    results.forEach((result) => {
+      if (result.result) {
+        this.exchange.send(result.result);
+      }
+    });
 
     return Promise.resolve();
   }
@@ -386,29 +438,8 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportMetric(metric: Metric, ctx: MetricSetReportContext<Metric>): {} {
-    let values = null;
-    if (metric instanceof MonotoneCounter) {
-      values = AmqpMetricReporter.getMonotoneCounterValues(metric);
-    } else if (metric instanceof Counter) {
-      values = AmqpMetricReporter.getCounterValues(metric);
-    } else if (metric instanceof Histogram) {
-      values = AmqpMetricReporter.getHistogramValues(metric);
-    } else if (metric instanceof Meter) {
-      values = AmqpMetricReporter.getMeterValues(metric);
-    } else if (metric instanceof Timer) {
-      values = AmqpMetricReporter.getTimerValues(metric);
-    } else {
-      values = AmqpMetricReporter.getGaugeValue(metric as Gauge<any>);
-    }
-
-    const name = metric.getName();
-    const group = metric.getGroup();
-    const tags = this.buildTags(ctx.registry, metric);
-    const timestamp = ctx.date;
-    const type = ctx.type;
-
-    return { name, group, tags, timestamp, values, type };
+  protected reportMetric(metric: Metric, ctx: MetricSetReportContext<Metric>): Amqp.Message {
+    return this.options.metricMessageBuilder(ctx.registry, metric, ctx.type, ctx.date, this.buildTags(ctx.registry, metric));
   }
 
   /**
@@ -420,8 +451,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportCounter(
-    counter: MonotoneCounter | Counter, ctx: MetricSetReportContext<MonotoneCounter | Counter>): {} {
+  protected reportCounter(counter: MonotoneCounter | Counter, ctx: MetricSetReportContext<MonotoneCounter | Counter>): Amqp.Message {
     return this.reportMetric(counter, ctx);
   }
 
@@ -434,7 +464,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportGauge(gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): {} {
+  protected reportGauge(gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): Amqp.Message {
     return this.reportMetric(gauge, ctx);
   }
 
@@ -447,7 +477,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportHistogram(histogram: Histogram, ctx: MetricSetReportContext<Histogram>): {} {
+  protected reportHistogram(histogram: Histogram, ctx: MetricSetReportContext<Histogram>): Amqp.Message {
     return this.reportMetric(histogram, ctx);
   }
 
@@ -460,7 +490,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportMeter(meter: Meter, ctx: MetricSetReportContext<Meter>): {} {
+  protected reportMeter(meter: Meter, ctx: MetricSetReportContext<Meter>): Amqp.Message {
     return this.reportMetric(meter, ctx);
   }
 
@@ -473,7 +503,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportTimer(timer: Timer, ctx: MetricSetReportContext<Timer>): {} {
+  protected reportTimer(timer: Timer, ctx: MetricSetReportContext<Timer>): Amqp.Message {
     return this.reportMetric(timer, ctx);
   }
 }
