@@ -1,6 +1,6 @@
 {
   "name": "inspector-amqp",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "Amqp metric reporter for nodejs",
   "main": "./build/lib/metrics/index.js",
   "typings": "./build/lib/metrics/index.d.ts",
@@ -45,9 +45,13 @@
     "inspector-metrics": ">=1.16.x"
   },
   "author": "ttous & doubret & rstiller",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/ttous/inspector-amqp/issues"
   },
+  "files": [
+    "build",
+    "docs"
+  ],
   "homepage": "https://github.com/ttous/inspector-amqp#readme"
 }
