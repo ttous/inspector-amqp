@@ -1,6 +1,6 @@
 # inspector-amqp
 
-Typescript [Metrics Reporter](https://github.com/rstiller/inspector-metrics/blob/master/lib/metrics/metric-reporter.ts) for [AMQP](https://www.amqp.org/).
+Typescript [Metrics Reporter](https://github.com/rstiller/inspector-metrics/blob/master/lib/metrics/reporter/metric-reporter.ts) for [AMQP](https://www.amqp.org/).
 
 This library is made for [inspector-metrics](https://github.com/rstiller/inspector-metrics) node module and is meant to be used with `typescript` / `nodejs`.
 
