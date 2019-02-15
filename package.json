@@ -44,14 +44,18 @@
   "peerDependencies": {
     "inspector-metrics": ">=1.16.x"
   },
-  "author": "ttous & doubret & rstiller",
+  "author": "ttous",
+  "contributors": [
+    "ttous",
+    "doubret",
+    "rstiller"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ttous/inspector-amqp/issues"
   },
   "files": [
-    "build",
-    "docs"
+    "build"
   ],
-  "homepage": "https://github.com/ttous/inspector-amqp#readme"
+  "homepage": "https://ttous.github.io/inspector-amqp/"
 }
