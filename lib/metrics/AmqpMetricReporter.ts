@@ -45,7 +45,7 @@ export interface AmqpMetricReporterOptions extends ScheduledMetricReporterOption
   connection: string;
   exchangeName: string;
   queueName: string;
-  
+
   /**
    * Used to build the amqp message for a metric.
    * @type {MetricMessageBuilder}
