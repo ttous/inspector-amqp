@@ -86,7 +86,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
         values = AmqpMetricReporter.getGaugeValue(metric as Gauge<any>);
       }
 
-      if (values === null) {
+      if (!values) {
         return null;
       }
 
