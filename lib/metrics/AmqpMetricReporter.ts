@@ -428,10 +428,6 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
     results
         .filter((result) => result.result)
         .forEach((result) => this.exchange.send(result.result));
-      if (result.result) {
-        this.exchange.send(result.result);
-      }
-    });
 
     return Promise.resolve();
   }
