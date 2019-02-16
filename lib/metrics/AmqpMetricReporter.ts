@@ -425,7 +425,9 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @memberof AmqpMetricReporter
    */
   protected handleResults(ctx: OverallReportContext, registry: MetricRegistry, date: Date, type: MetricType, results: Array<ReportingResult<any, Amqp.Message>>): Promise<void> {
-    results.forEach((result) => {
+    results
+        .filter((result) => result.result)
+        .forEach((result) => this.exchange.send(result.result));
       if (result.result) {
         this.exchange.send(result.result);
       }
