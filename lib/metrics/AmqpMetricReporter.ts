@@ -68,6 +68,13 @@ export interface ICounterValue {
 }
 
 /**
+ * Interface used when extracting values from a {@link Gauge}.
+ */
+export interface IGaugeValue<T> {
+  value: T;
+}
+
+/**
  * Interface used when extracting values from a {@link Histogram}.
  */
 export interface IHistogramValue {
@@ -164,10 +171,6 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
   public static getMonotoneCounterValue(counter: MonotoneCounter): ICounterValue {
     const count = counter.getCount();
 
-    if (!count || isNaN(count)) {
-      return null;
-    }
-
     return { count };
   }
 
@@ -182,10 +185,6 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
   public static getCounterValue(counter: Counter): ICounterValue {
     const count = counter.getCount();
 
-    if (!count || isNaN(count)) {
-      return null;
-    }
-
     return { count };
   }
 
@@ -193,20 +192,12 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * Gets the values for the specified {Gauge} metric.
    *
    * @static
-   * @param {Gauge<any>} gauge
-   * @returns {{}}
+   * @param {Gauge<T>} gauge
+   * @returns {IGaugeValue<T>}
    * @memberof AmqpMetricReporter
    */
-  public static getGaugeValue(gauge: Gauge<any>): { /* TODO : harden type */ } {
+  public static getGaugeValue<T>(gauge: Gauge<T>): IGaugeValue<T> {
     const value = gauge.getValue();
-
-    if ((!value && value !== 0) || Number.isNaN(value)) {
-      return null;
-    }
-
-    if (typeof value === "object") {
-      return value;
-    }
 
     return { value };
   }
@@ -221,10 +212,6 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    */
   public static getHistogramValue(histogram: Histogram): IHistogramValue {
     const count = histogram.getCount();
-
-    if (!count || isNaN(count)) {
-      return null;
-    }
 
     const snapshot = histogram.getSnapshot();
 
@@ -254,10 +241,6 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
   public static getMeterValue(meter: Meter): IMeterValue {
     const count = meter.getCount();
 
-    if (!count || isNaN(count)) {
-      return null;
-    }
-
     return {
       count,
       m15_rate: AmqpMetricReporter.getNumber(meter.get15MinuteRate()),
@@ -277,10 +260,6 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    */
   public static getTimerValue(timer: Timer): ITimerValue {
     const count = timer.getCount();
-
-    if (!count || isNaN(count)) {
-      return null;
-    }
 
     const snapshot = timer.getSnapshot();
 
