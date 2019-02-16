@@ -60,6 +60,62 @@ export interface AmqpMetricReporterOptions extends ScheduledMetricReporterOption
   metricMessageBuilder: MetricMessageBuilder;
 }
 
+/**
+ * Interface used when extracting values from a {@link Counter} or {@link MonotoneCounter}.
+ */
+export interface ICounterValue {
+  count: number;
+}
+
+/**
+ * Interface used when extracting values from a {@link Histogram}.
+ */
+export interface IHistogramValue {
+  count: number;
+  max: number;
+  mean: number;
+  min: number;
+  p50: number;
+  p75: number;
+  p95: number;
+  p98: number;
+  p99: number;
+  p999: number;
+  stddev: number;
+}
+
+/**
+ * Interface used when extracting values from a {@link Meter}.
+ */
+export interface IMeterValue {
+  count: number;
+  m15_rate: number;
+  m1_rate: number;
+  m5_rate: number;
+  mean_rate: number;
+}
+
+/**
+ * Interface used when extracting values from a {@link Timer}.
+ */
+export interface ITimerValue {
+  count: number;
+  m15_rate: number;
+  m1_rate: number;
+  m5_rate: number;
+  max: number;
+  mean: number;
+  mean_rate: number;
+  min: number;
+  p50: number;
+  p75: number;
+  p95: number;
+  p98: number;
+  p99: number;
+  p999: number;
+  stddev: number;
+}
+
 export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReporterOptions, Amqp.Message> {
   /**
    * Returns a {@link MetricMessageBuilder} that builds an Amqp.Message for a metric.
@@ -73,15 +129,15 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
       let values = null;
 
       if (metric instanceof MonotoneCounter) {
-        values = AmqpMetricReporter.getMonotoneCounterValues(metric);
+        values = AmqpMetricReporter.getMonotoneCounterValue(metric);
       } else if (metric instanceof Counter) {
-        values = AmqpMetricReporter.getCounterValues(metric);
+        values = AmqpMetricReporter.getCounterValue(metric);
       } else if (metric instanceof Histogram) {
-        values = AmqpMetricReporter.getHistogramValues(metric);
+        values = AmqpMetricReporter.getHistogramValue(metric);
       } else if (metric instanceof Meter) {
-        values = AmqpMetricReporter.getMeterValues(metric);
+        values = AmqpMetricReporter.getMeterValue(metric);
       } else if (metric instanceof Timer) {
-        values = AmqpMetricReporter.getTimerValues(metric);
+        values = AmqpMetricReporter.getTimerValue(metric);
       } else {
         values = AmqpMetricReporter.getGaugeValue(metric as Gauge<any>);
       }
@@ -102,14 +158,16 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    *
    * @static
    * @param {MonotoneCounter} counter
-   * @returns {{}}
+   * @returns {ICounterValue}
    * @memberof AmqpMetricReporter
    */
-  public static getMonotoneCounterValues(counter: MonotoneCounter): { count: number } {
+  public static getMonotoneCounterValue(counter: MonotoneCounter): ICounterValue {
     const count = counter.getCount();
+
     if (!count || isNaN(count)) {
       return null;
     }
+
     return { count };
   }
 
@@ -118,14 +176,16 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    *
    * @static
    * @param {Counter} counter
-   * @returns {{}}
+   * @returns {ICounterValue}
    * @memberof AmqpMetricReporter
    */
-  public static getCounterValues(counter: Counter): { count: number } {
+  public static getCounterValue(counter: Counter): ICounterValue {
     const count = counter.getCount();
+
     if (!count || isNaN(count)) {
       return null;
     }
+
     return { count };
   }
 
@@ -137,14 +197,17 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  public static getGaugeValue(gauge: Gauge<any>): {} {
+  public static getGaugeValue(gauge: Gauge<any>): { /* TODO : harden type */ } {
     const value = gauge.getValue();
+
     if ((!value && value !== 0) || Number.isNaN(value)) {
       return null;
     }
+
     if (typeof value === "object") {
       return value;
     }
+
     return { value };
   }
 
@@ -153,30 +216,31 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    *
    * @static
    * @param {Histogram} histogram
-   * @returns {{}}
+   * @returns {IHistogramValue}
    * @memberof AmqpMetricReporter
    */
-  public static getHistogramValues(histogram: Histogram): {/* todo : type */ } {
-    const value = histogram.getCount();
-    if (!value || isNaN(value)) {
+  public static getHistogramValue(histogram: Histogram): IHistogramValue {
+    const count = histogram.getCount();
+
+    if (!count || isNaN(count)) {
       return null;
     }
+
     const snapshot = histogram.getSnapshot();
-    const values: any = {};
 
-    values[`count`] = value;
-    values[`max`] = this.getNumber(snapshot.getMax());
-    values[`mean`] = this.getNumber(snapshot.getMean());
-    values[`min`] = this.getNumber(snapshot.getMin());
-    values[`p50`] = this.getNumber(snapshot.getMedian());
-    values[`p75`] = this.getNumber(snapshot.get75thPercentile());
-    values[`p95`] = this.getNumber(snapshot.get95thPercentile());
-    values[`p98`] = this.getNumber(snapshot.get98thPercentile());
-    values[`p99`] = this.getNumber(snapshot.get99thPercentile());
-    values[`p999`] = this.getNumber(snapshot.get999thPercentile());
-    values[`stddev`] = this.getNumber(snapshot.getStdDev());
-
-    return values;
+    return {
+      count,
+      max: AmqpMetricReporter.getNumber(snapshot.getMax()),
+      mean: AmqpMetricReporter.getNumber(snapshot.getMean()),
+      min: AmqpMetricReporter.getNumber(snapshot.getMin()),
+      p50: AmqpMetricReporter.getNumber(snapshot.getMedian()),
+      p75: AmqpMetricReporter.getNumber(snapshot.get75thPercentile()),
+      p95: AmqpMetricReporter.getNumber(snapshot.get95thPercentile()),
+      p98: AmqpMetricReporter.getNumber(snapshot.get98thPercentile()),
+      p99: AmqpMetricReporter.getNumber(snapshot.get99thPercentile()),
+      p999: AmqpMetricReporter.getNumber(snapshot.get999thPercentile()),
+      stddev: AmqpMetricReporter.getNumber(snapshot.getStdDev()),
+    };
   }
 
   /**
@@ -184,23 +248,23 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    *
    * @static
    * @param {Meter} meter
-   * @returns {{}}
+   * @returns {IMeterValue}
    * @memberof AmqpMetricReporter
    */
-  public static getMeterValues(meter: Meter): {/* todo : type */ } {
-    const value = meter.getCount();
-    if (!value || isNaN(value)) {
+  public static getMeterValue(meter: Meter): IMeterValue {
+    const count = meter.getCount();
+
+    if (!count || isNaN(count)) {
       return null;
     }
-    const values: any = {};
 
-    values[`count`] = value;
-    values[`m15_rate`] = this.getNumber(meter.get15MinuteRate());
-    values[`m1_rate`] = this.getNumber(meter.get1MinuteRate());
-    values[`m5_rate`] = this.getNumber(meter.get5MinuteRate());
-    values[`mean_rate`] = this.getNumber(meter.getMeanRate());
-
-    return values;
+    return {
+      count,
+      m15_rate: AmqpMetricReporter.getNumber(meter.get15MinuteRate()),
+      m1_rate: AmqpMetricReporter.getNumber(meter.get1MinuteRate()),
+      m5_rate: AmqpMetricReporter.getNumber(meter.get5MinuteRate()),
+      mean_rate: AmqpMetricReporter.getNumber(meter.getMeanRate()),
+    };
   }
 
   /**
@@ -208,34 +272,35 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    *
    * @static
    * @param {Timer} timer
-   * @returns {{}}
+   * @returns {ITimerValue}
    * @memberof AmqpMetricReporter
    */
-  public static getTimerValues(timer: Timer): {/* todo : type */ } {
-    const value = timer.getCount();
-    if (!value || isNaN(value)) {
+  public static getTimerValue(timer: Timer): ITimerValue {
+    const count = timer.getCount();
+
+    if (!count || isNaN(count)) {
       return null;
     }
+
     const snapshot = timer.getSnapshot();
-    const values: any = {};
 
-    values[`count`] = value;
-    values[`m15_rate`] = this.getNumber(timer.get15MinuteRate());
-    values[`m1_rate`] = this.getNumber(timer.get1MinuteRate());
-    values[`m5_rate`] = this.getNumber(timer.get5MinuteRate());
-    values[`max`] = this.getNumber(snapshot.getMax());
-    values[`mean`] = this.getNumber(snapshot.getMean());
-    values[`mean_rate`] = this.getNumber(timer.getMeanRate());
-    values[`min`] = this.getNumber(snapshot.getMin());
-    values[`p50`] = this.getNumber(snapshot.getMedian());
-    values[`p75`] = this.getNumber(snapshot.get75thPercentile());
-    values[`p95`] = this.getNumber(snapshot.get95thPercentile());
-    values[`p98`] = this.getNumber(snapshot.get98thPercentile());
-    values[`p99`] = this.getNumber(snapshot.get99thPercentile());
-    values[`p999`] = this.getNumber(snapshot.get999thPercentile());
-    values[`stddev`] = this.getNumber(snapshot.getStdDev());
-
-    return values;
+    return {
+      count,
+      m15_rate: AmqpMetricReporter.getNumber(timer.get15MinuteRate()),
+      m1_rate: AmqpMetricReporter.getNumber(timer.get1MinuteRate()),
+      m5_rate: AmqpMetricReporter.getNumber(timer.get5MinuteRate()),
+      max: AmqpMetricReporter.getNumber(snapshot.getMax()),
+      mean: AmqpMetricReporter.getNumber(snapshot.getMean()),
+      mean_rate: AmqpMetricReporter.getNumber(timer.getMeanRate()),
+      min: AmqpMetricReporter.getNumber(snapshot.getMin()),
+      p50: AmqpMetricReporter.getNumber(snapshot.getMedian()),
+      p75: AmqpMetricReporter.getNumber(snapshot.get75thPercentile()),
+      p95: AmqpMetricReporter.getNumber(snapshot.get95thPercentile()),
+      p98: AmqpMetricReporter.getNumber(snapshot.get98thPercentile()),
+      p99: AmqpMetricReporter.getNumber(snapshot.get99thPercentile()),
+      p999: AmqpMetricReporter.getNumber(snapshot.get999thPercentile()),
+      stddev: AmqpMetricReporter.getNumber(snapshot.getStdDev()),
+    };
   }
 
   /**
@@ -426,8 +491,8 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    */
   protected handleResults(ctx: OverallReportContext, registry: MetricRegistry, date: Date, type: MetricType, results: Array<ReportingResult<any, Amqp.Message>>): Promise<void> {
     results
-        .filter((result) => result.result)
-        .forEach((result) => this.exchange.send(result.result));
+      .filter((result) => result.result)
+      .forEach((result) => this.exchange.send(result.result));
 
     return Promise.resolve();
   }
