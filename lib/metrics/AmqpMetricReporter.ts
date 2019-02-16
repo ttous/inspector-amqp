@@ -32,6 +32,13 @@ import {
  */
 export type MetricMessageBuilder = (registry: MetricRegistry, metric: Metric, type: MetricType, date: Date, tags: Tags) => Amqp.Message;
 
+/**
+ * Options for {@link AmqpMetricReporter}.
+ *
+ * @export
+ * @interface AmqpMetricReporterOptions
+ * @extends {ScheduledMetricReporterOptions}
+ */
 export interface AmqpMetricReporterOptions extends ScheduledMetricReporterOptions {
   /**
    * Logger instance used to report errors.
@@ -58,8 +65,8 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * Returns a {@link MetricMessageBuilder} that builds an Amqp.Message for a metric.
    *
    * @static
-   * @returns {MetricDocumentBuilder}
-   * @memberof ElasticsearchMetricReporter
+   * @returns {MetricMessageBuilder}
+   * @memberof AmqpMetricReporter
    */
   public static defaultMessageBuilder(): MetricMessageBuilder {
     return (registry: MetricRegistry, metric: Metric, type: MetricType, timestamp: Date, tags: Tags) => {
@@ -407,8 +414,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
   }
 
   /**
-   * Send the combinations of index and document to the elasticsearch cluster
-   * using the bulk method of the elasticsearch client.
+   * Send the messages in the target amqp exchange.
    *
    * @protected
    * @param {MetricRegistry} registry
