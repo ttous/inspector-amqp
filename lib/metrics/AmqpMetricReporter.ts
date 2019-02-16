@@ -30,7 +30,7 @@ import {
 /**
  * Interface for building a message for a metric.
  */
-export type MetricMessageBuilder = (registry: MetricRegistry, metric: Metric, type: MetricType, date: Date, tags: Tags) => Amqp.Message;
+export type MetricMessageBuilder = (registry: MetricRegistry, metric: Metric, type: MetricType, date: Date, tags: Tags) => Amqp.Message | null;
 
 /**
  * Options for {@link AmqpMetricReporter}.
