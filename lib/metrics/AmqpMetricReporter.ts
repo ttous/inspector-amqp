@@ -150,8 +150,10 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
         values = AmqpMetricReporter.getMeterValue(metric);
       } else if (metric instanceof Timer) {
         values = AmqpMetricReporter.getTimerValue(metric, withBuckets);
+      } else if (MetricRegistry.isGauge<any>(metric)) {
+        values = AmqpMetricReporter.getGaugeValue(metric);
       } else {
-        values = AmqpMetricReporter.getGaugeValue(metric as Gauge<any>);
+        return null;
       }
 
       if (!values) {
