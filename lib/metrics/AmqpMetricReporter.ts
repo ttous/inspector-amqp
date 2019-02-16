@@ -3,6 +3,7 @@ import "source-map-support/register";
 import * as Amqp from "amqp-ts";
 
 import {
+  Buckets,
   Clock,
   Counter,
   Event,
@@ -78,6 +79,8 @@ export interface IGaugeValue<T> {
  * Interface used when extracting values from a {@link Histogram}.
  */
 export interface IHistogramValue {
+  buckets?: Buckets;
+  buckets_counts: Map<number, number>;
   count: number;
   max: number;
   mean: number;
@@ -106,6 +109,8 @@ export interface IMeterValue {
  * Interface used when extracting values from a {@link Timer}.
  */
 export interface ITimerValue {
+  buckets?: Buckets;
+  buckets_counts: Map<number, number>;
   count: number;
   m15_rate: number;
   m1_rate: number;
@@ -131,7 +136,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {MetricMessageBuilder}
    * @memberof AmqpMetricReporter
    */
-  public static defaultMessageBuilder(): MetricMessageBuilder {
+  public static defaultMessageBuilder(withBuckets: boolean): MetricMessageBuilder {
     return (registry: MetricRegistry, metric: Metric, type: MetricType, timestamp: Date, tags: Tags) => {
       let values = null;
 
@@ -140,11 +145,11 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
       } else if (metric instanceof Counter) {
         values = AmqpMetricReporter.getCounterValue(metric);
       } else if (metric instanceof Histogram) {
-        values = AmqpMetricReporter.getHistogramValue(metric);
+        values = AmqpMetricReporter.getHistogramValue(metric, withBuckets);
       } else if (metric instanceof Meter) {
         values = AmqpMetricReporter.getMeterValue(metric);
       } else if (metric instanceof Timer) {
-        values = AmqpMetricReporter.getTimerValue(metric);
+        values = AmqpMetricReporter.getTimerValue(metric, withBuckets);
       } else {
         values = AmqpMetricReporter.getGaugeValue(metric as Gauge<any>);
       }
@@ -210,12 +215,14 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {IHistogramValue}
    * @memberof AmqpMetricReporter
    */
-  public static getHistogramValue(histogram: Histogram): IHistogramValue {
+  public static getHistogramValue(histogram: Histogram, withBuckets: boolean): IHistogramValue {
     const count = histogram.getCount();
 
     const snapshot = histogram.getSnapshot();
 
     return {
+      buckets: withBuckets ? histogram.getBuckets() : undefined,
+      buckets_counts: histogram.getCounts(),
       count,
       max: AmqpMetricReporter.getNumber(snapshot.getMax()),
       mean: AmqpMetricReporter.getNumber(snapshot.getMean()),
@@ -258,12 +265,14 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {ITimerValue}
    * @memberof AmqpMetricReporter
    */
-  public static getTimerValue(timer: Timer): ITimerValue {
+  public static getTimerValue(timer: Timer, withBuckets: boolean): ITimerValue {
     const count = timer.getCount();
 
     const snapshot = timer.getSnapshot();
 
     return {
+      buckets: withBuckets ? timer.getBuckets() : undefined,
+      buckets_counts: timer.getCounts(),
       count,
       m15_rate: AmqpMetricReporter.getNumber(timer.get15MinuteRate()),
       m1_rate: AmqpMetricReporter.getNumber(timer.get1MinuteRate()),
@@ -315,7 +324,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
       connection,
       exchangeName,
       log = console,
-      metricMessageBuilder = AmqpMetricReporter.defaultMessageBuilder(),
+      metricMessageBuilder = AmqpMetricReporter.defaultMessageBuilder(true),
       minReportingTimeout = 1,
       queueName,
       reportInterval = 1000,
