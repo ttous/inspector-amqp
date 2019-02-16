@@ -34,6 +34,55 @@ import {
 export type MetricMessageBuilder = (registry: MetricRegistry, metric: Metric, type: MetricType, date: Date, tags: Tags) => Amqp.Message | null;
 
 /**
+ * Interface for building the underlying amqp topology.
+ */
+export type AmqpTopologyBuilder = () => Amqp.Queue | Amqp.Exchange;
+
+/**
+ * Helper class for creating {@link AmqpTopologyBuilder}.
+ *
+ * @export
+ */
+export class AmqpTopologyHelper {
+  /**
+   * Returns a {@link AmqpTopologyBuilder} that builds an amqp topology with a single queue.
+   * The queue is returned as the target.
+   *
+   * @static
+   * @returns {AmqpTopologyBuilder}
+   * @memberof AmqpTopologyHelper
+   */
+  public static queue(connection: string, queue: string): AmqpTopologyBuilder {
+    return () => {
+      const amqpConnection = new Amqp.Connection(connection);
+      const amqpQueue = amqpConnection.declareQueue(queue);
+
+      return amqpQueue;
+    };
+  }
+
+  /**
+   * Returns a {@link AmqpTopologyBuilder} that builds an amqp topology with a single queue and a single exchange bound together.
+   * The exchange is returned as the target.
+   *
+   * @static
+   * @returns {AmqpTopologyBuilder}
+   * @memberof AmqpTopologyHelper
+   */
+  public static exchange(connection: string, queue: string, exchange: string): AmqpTopologyBuilder {
+    return () => {
+      const amqpConnection = new Amqp.Connection(connection);
+      const amqpQueue = amqpConnection.declareQueue(queue);
+      const amqpExchange = amqpConnection.declareExchange(exchange);
+
+      amqpQueue.bind(amqpExchange);
+
+      return amqpExchange;
+    };
+  }
+}
+
+/**
  * Options for {@link AmqpMetricReporter}.
  *
  * @export
@@ -48,11 +97,6 @@ export interface AmqpMetricReporterOptions extends ScheduledMetricReporterOption
    * @memberof AmqpMetricReporterOptions
    */
   log: Logger;
-
-  // TO DO: COMMENT
-  connection: string;
-  exchangeName: string;
-  queueName: string;
 
   /**
    * Used to build the amqp message for a metric.
@@ -309,46 +353,39 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
   }
 
   /**
-   * Amqp exchange used to do reporting.
+   * Amqp target used to do reporting.
    *
    * @private
-   * @type {Amqp.Exchange}
+   * @type {Amqp.Queue | Amqp.Exchange}
    * @memberof AmqpMetricReporter
    */
-  private exchange: Amqp.Exchange;
+  private target: Amqp.Queue | Amqp.Exchange;
 
   /**
    * Creates an instance of AmqpMetricReporter.
    */
   public constructor(
     {
+      amqpTopologyBuilder,
       clock = new StdClock(),
-      connection,
-      exchangeName,
       log = console,
       metricMessageBuilder = AmqpMetricReporter.defaultMessageBuilder(true),
       minReportingTimeout = 1,
-      queueName,
       reportInterval = 1000,
       scheduler = setInterval,
       tags = new Map(),
       unit = MILLISECOND,
     }: {
       /**
+       * Used to build the underlying amqp topology.
+       * @type {AmqpTopologyBuilder}
+       */
+      amqpTopologyBuilder: AmqpTopologyBuilder,
+      /**
        * The clock instance used determine the current time.
        * @type {Clock}
        */
       clock?: Clock;
-      /**
-       * Amqp connection URI.
-       * @type {string}
-       */
-      connection: string,
-      /**
-       * Amqp exchange name.
-       * @type {string}
-       */
-      exchangeName: string,
       /**
        * The logger instance used to report metrics.
        * @type {Logger}
@@ -364,11 +401,6 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
        * @type {number}
        */
       minReportingTimeout?: number;
-      /**
-       * Amqp queue name.
-       * @type {string}
-       */
-      queueName: string,
       /**
        * Reporting interval in the time-unit of {@link #unit}.
        * @type {number}
@@ -392,25 +424,16 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
     }) {
     super({
       clock,
-      connection,
-      exchangeName,
       log,
       metricMessageBuilder,
       minReportingTimeout,
-      queueName,
       reportInterval,
       scheduler,
       tags,
       unit,
     });
 
-    const amqpConnection = new Amqp.Connection(connection);
-    const queue = amqpConnection.declareQueue(queueName);
-    const exchange = amqpConnection.declareExchange(exchangeName);
-
-    queue.bind(exchange);
-
-    this.exchange = exchange;
+    this.target = amqpTopologyBuilder();
   }
 
   /**
@@ -482,7 +505,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
   protected handleResults(ctx: OverallReportContext, registry: MetricRegistry, date: Date, type: MetricType, results: Array<ReportingResult<any, Amqp.Message>>): Promise<void> {
     results
       .filter((result) => result.result)
-      .forEach((result) => this.exchange.send(result.result));
+      .forEach((result) => result.result.sendTo(this.target));
 
     return Promise.resolve();
   }
