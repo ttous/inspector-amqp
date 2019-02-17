@@ -1,11 +1,9 @@
 import { Event } from "inspector-metrics";
-import { AmqpMetricReporter } from "../metrics";
+import { AmqpMetricReporter, AmqpTopologyHelper } from "../metrics";
 
 // instance the Amqp reporter
 const reporter: AmqpMetricReporter = new AmqpMetricReporter({
-  connection: "amqp://localhost",
-  exchangeName: "exchange",
-  queueName: "queue",
+  amqpTopologyBuilder: AmqpTopologyHelper.queue("amqp://localhost", "queue"),
 });
 
 // start reporter
