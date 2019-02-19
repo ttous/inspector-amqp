@@ -27,6 +27,7 @@ import {
 } from "inspector-metrics";
 
 import { AmqpMetricReporterOptions } from "./AmqpMetricReporterOptions";
+import { AmqpReportingResult } from "./AmqpReportingResult";
 import { AmqpTopologyBuilder } from "./AmqpTopologyBuilder";
 import { ICounterValue } from "./ICounterValue";
 import { IGaugeValue } from "./IGaugeValue";
@@ -34,8 +35,9 @@ import { IHistogramValue } from "./IHistogramValue";
 import { IMeterValue } from "./IMeterValue";
 import { ITimerValue } from "./ITimerValue";
 import { MetricMessageBuilder } from "./MetricMessageBuilder";
+import { RoutingKeyDeterminator } from "./RoutingKeyDeterminator";
 
-export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReporterOptions, Message> {
+export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReporterOptions, AmqpReportingResult> {
   /**
    * Returns a {@link MetricMessageBuilder} that builds an Amqp.Message for a metric.
    *
@@ -72,6 +74,17 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
 
       return new Message(JSON.stringify({ name, group, timestamp, type, tags, values }));
     };
+  }
+
+  /**
+   * Returns a {@link RoutingKeyDeterminator} that determines the routing key for a given metric.
+   *
+   * @static
+   * @returns {RoutingKeyDeterminator}
+   * @memberof AmqpMetricReporter
+   */
+  public static defaultRoutingKeyDeterminator(): RoutingKeyDeterminator {
+    return (registry: MetricRegistry, metric: Metric, type: MetricType, timestamp: Date, tags: Tags) => undefined;
   }
 
   /**
@@ -235,6 +248,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
       metricMessageBuilder = AmqpMetricReporter.defaultMessageBuilder(true),
       minReportingTimeout = 1,
       reportInterval = 1000,
+      routingKeyDeterminator = AmqpMetricReporter.defaultRoutingKeyDeterminator(),
       scheduler = setInterval,
       tags = new Map(),
       unit = MILLISECOND,
@@ -270,6 +284,11 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
        */
       reportInterval?: number;
       /**
+       * Used to determine the routing key for a given metric.
+       * @type {RoutingKeyDeterminator}
+       */
+      routingKeyDeterminator?: RoutingKeyDeterminator,
+      /**
        * The scheduler function used to trigger reporting.
        * @type {Scheduler}
        */
@@ -291,6 +310,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
       metricMessageBuilder,
       minReportingTimeout,
       reportInterval,
+      routingKeyDeterminator,
       scheduler,
       tags,
       unit,
@@ -365,10 +385,10 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {Promise<void>}
    * @memberof AmqpMetricReporter
    */
-  protected handleResults(ctx: OverallReportContext, registry: MetricRegistry, date: Date, type: MetricType, results: Array<ReportingResult<any, Message>>): Promise<void> {
+  protected handleResults(ctx: OverallReportContext, registry: MetricRegistry, date: Date, type: MetricType, results: Array<ReportingResult<any, AmqpReportingResult>>): Promise<void> {
     results
-      .filter((result) => result.result)
-      .forEach((result) => result.result.sendTo(this.target));
+      .filter((result) => result.result && result.result.message)
+      .forEach((result) => result.result.message.sendTo(this.target, result.result.routingKey));
 
     return Promise.resolve();
   }
@@ -383,8 +403,12 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportMetric(metric: Metric, ctx: MetricSetReportContext<Metric>): Message {
-    return this.options.metricMessageBuilder(ctx.registry, metric, ctx.type, ctx.date, this.buildTags(ctx.registry, metric));
+  protected reportMetric(metric: Metric, ctx: MetricSetReportContext<Metric>): AmqpReportingResult {
+    const tags = this.buildTags(ctx.registry, metric);
+    const message = this.options.metricMessageBuilder(ctx.registry, metric, ctx.type, ctx.date, tags);
+    const routingKey = this.options.routingKeyDeterminator(ctx.registry, metric, ctx.type, ctx.date, tags);
+
+    return { message, routingKey };
   }
 
   /**
@@ -396,7 +420,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportCounter(counter: MonotoneCounter | Counter, ctx: MetricSetReportContext<MonotoneCounter | Counter>): Message {
+  protected reportCounter(counter: MonotoneCounter | Counter, ctx: MetricSetReportContext<MonotoneCounter | Counter>): AmqpReportingResult {
     return this.reportMetric(counter, ctx);
   }
 
@@ -409,7 +433,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportGauge(gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): Message {
+  protected reportGauge(gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): AmqpReportingResult {
     return this.reportMetric(gauge, ctx);
   }
 
@@ -422,7 +446,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportHistogram(histogram: Histogram, ctx: MetricSetReportContext<Histogram>): Message {
+  protected reportHistogram(histogram: Histogram, ctx: MetricSetReportContext<Histogram>): AmqpReportingResult {
     return this.reportMetric(histogram, ctx);
   }
 
@@ -435,7 +459,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportMeter(meter: Meter, ctx: MetricSetReportContext<Meter>): Message {
+  protected reportMeter(meter: Meter, ctx: MetricSetReportContext<Meter>): AmqpReportingResult {
     return this.reportMetric(meter, ctx);
   }
 
@@ -448,7 +472,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportTimer(timer: Timer, ctx: MetricSetReportContext<Timer>): Message {
+  protected reportTimer(timer: Timer, ctx: MetricSetReportContext<Timer>): AmqpReportingResult {
     return this.reportMetric(timer, ctx);
   }
 }
