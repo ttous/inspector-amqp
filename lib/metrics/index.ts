@@ -2,6 +2,7 @@ import "source-map-support/register";
 
 export * from "./AmqpMetricReporter";
 export * from "./AmqpMetricReporterOptions";
+export * from "./AmqpReportingResult";
 export * from "./AmqpTopologyBuilder";
 export * from "./AmqpTopologyHelper";
 export * from "./ICounterValue";

@@ -385,12 +385,10 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {Promise<void>}
    * @memberof AmqpMetricReporter
    */
-  protected handleResults(ctx: OverallReportContext, registry: MetricRegistry, date: Date, type: MetricType, results: Array<ReportingResult<any, AmqpReportingResult>>): Promise<void> {
+  protected async handleResults(ctx: OverallReportContext, registry: MetricRegistry, date: Date, type: MetricType, results: Array<ReportingResult<any, AmqpReportingResult>>): Promise<void> {
     results
       .filter((result) => result.result && result.result.message)
       .forEach((result) => result.result.message.sendTo(this.target, result.result.routingKey));
-
-    return Promise.resolve();
   }
 
   /**
