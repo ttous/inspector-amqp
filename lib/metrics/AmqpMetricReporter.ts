@@ -1,9 +1,8 @@
 import "source-map-support/register";
 
-import * as Amqp from "amqp-ts";
+import { Exchange, Message, Queue } from "amqp-ts";
 
 import {
-  Buckets,
   Clock,
   Counter,
   Event,
@@ -20,7 +19,6 @@ import {
   OverallReportContext,
   ReportingResult,
   ScheduledMetricReporter,
-  ScheduledMetricReporterOptions,
   Scheduler,
   StdClock,
   Tags,
@@ -28,151 +26,16 @@ import {
   TimeUnit,
 } from "inspector-metrics";
 
-/**
- * Interface for building a message for a metric.
- */
-export type MetricMessageBuilder = (registry: MetricRegistry, metric: Metric, type: MetricType, date: Date, tags: Tags) => Amqp.Message | null;
+import { AmqpMetricReporterOptions } from "./AmqpMetricReporterOptions";
+import { AmqpTopologyBuilder } from "./AmqpTopologyBuilder";
+import { ICounterValue } from "./ICounterValue";
+import { IGaugeValue } from "./IGaugeValue";
+import { IHistogramValue } from "./IHistogramValue";
+import { IMeterValue } from "./IMeterValue";
+import { ITimerValue } from "./ITimerValue";
+import { MetricMessageBuilder } from "./MetricMessageBuilder";
 
-/**
- * Interface for building the underlying amqp topology.
- */
-export type AmqpTopologyBuilder = () => Amqp.Queue | Amqp.Exchange;
-
-/**
- * Helper class for creating {@link AmqpTopologyBuilder}.
- *
- * @export
- */
-export class AmqpTopologyHelper {
-  /**
-   * Returns a {@link AmqpTopologyBuilder} that builds an amqp topology with a single queue.
-   * The queue is returned as the target.
-   *
-   * @static
-   * @returns {AmqpTopologyBuilder}
-   * @memberof AmqpTopologyHelper
-   */
-  public static queue(connection: string, queue: string): AmqpTopologyBuilder {
-    return () => {
-      const amqpConnection = new Amqp.Connection(connection);
-      const amqpQueue = amqpConnection.declareQueue(queue);
-
-      return amqpQueue;
-    };
-  }
-
-  /**
-   * Returns a {@link AmqpTopologyBuilder} that builds an amqp topology with a single queue and a single exchange bound together.
-   * The exchange is returned as the target.
-   *
-   * @static
-   * @returns {AmqpTopologyBuilder}
-   * @memberof AmqpTopologyHelper
-   */
-  public static exchange(connection: string, queue: string, exchange: string): AmqpTopologyBuilder {
-    return () => {
-      const amqpConnection = new Amqp.Connection(connection);
-      const amqpQueue = amqpConnection.declareQueue(queue);
-      const amqpExchange = amqpConnection.declareExchange(exchange);
-
-      amqpQueue.bind(amqpExchange);
-
-      return amqpExchange;
-    };
-  }
-}
-
-/**
- * Options for {@link AmqpMetricReporter}.
- *
- * @export
- * @interface AmqpMetricReporterOptions
- * @extends {ScheduledMetricReporterOptions}
- */
-export interface AmqpMetricReporterOptions extends ScheduledMetricReporterOptions {
-  /**
-   * Logger instance used to report errors.
-   *
-   * @type {Logger}
-   * @memberof AmqpMetricReporterOptions
-   */
-  log: Logger;
-
-  /**
-   * Used to build the amqp message for a metric.
-   * @type {MetricMessageBuilder}
-   */
-  metricMessageBuilder: MetricMessageBuilder;
-}
-
-/**
- * Interface used when extracting values from a {@link Counter} or {@link MonotoneCounter}.
- */
-export interface ICounterValue {
-  count: number;
-}
-
-/**
- * Interface used when extracting values from a {@link Gauge}.
- */
-export interface IGaugeValue<T> {
-  value: T;
-}
-
-/**
- * Interface used when extracting values from a {@link Histogram}.
- */
-export interface IHistogramValue {
-  buckets?: Buckets;
-  buckets_counts: Map<number, number>;
-  count: number;
-  max: number;
-  mean: number;
-  min: number;
-  p50: number;
-  p75: number;
-  p95: number;
-  p98: number;
-  p99: number;
-  p999: number;
-  stddev: number;
-}
-
-/**
- * Interface used when extracting values from a {@link Meter}.
- */
-export interface IMeterValue {
-  count: number;
-  m15_rate: number;
-  m1_rate: number;
-  m5_rate: number;
-  mean_rate: number;
-}
-
-/**
- * Interface used when extracting values from a {@link Timer}.
- */
-export interface ITimerValue {
-  buckets?: Buckets;
-  buckets_counts: Map<number, number>;
-  count: number;
-  m15_rate: number;
-  m1_rate: number;
-  m5_rate: number;
-  max: number;
-  mean: number;
-  mean_rate: number;
-  min: number;
-  p50: number;
-  p75: number;
-  p95: number;
-  p98: number;
-  p99: number;
-  p999: number;
-  stddev: number;
-}
-
-export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReporterOptions, Amqp.Message> {
+export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReporterOptions, Message> {
   /**
    * Returns a {@link MetricMessageBuilder} that builds an Amqp.Message for a metric.
    *
@@ -207,7 +70,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
       const name = metric.getName();
       const group = metric.getGroup();
 
-      return new Amqp.Message(JSON.stringify({ name, group, timestamp, type, tags, values }));
+      return new Message(JSON.stringify({ name, group, timestamp, type, tags, values }));
     };
   }
 
@@ -359,7 +222,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @type {Amqp.Queue | Amqp.Exchange}
    * @memberof AmqpMetricReporter
    */
-  private target: Amqp.Queue | Amqp.Exchange;
+  private target: Queue | Exchange;
 
   /**
    * Creates an instance of AmqpMetricReporter.
@@ -502,7 +365,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {Promise<void>}
    * @memberof AmqpMetricReporter
    */
-  protected handleResults(ctx: OverallReportContext, registry: MetricRegistry, date: Date, type: MetricType, results: Array<ReportingResult<any, Amqp.Message>>): Promise<void> {
+  protected handleResults(ctx: OverallReportContext, registry: MetricRegistry, date: Date, type: MetricType, results: Array<ReportingResult<any, Message>>): Promise<void> {
     results
       .filter((result) => result.result)
       .forEach((result) => result.result.sendTo(this.target));
@@ -520,7 +383,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportMetric(metric: Metric, ctx: MetricSetReportContext<Metric>): Amqp.Message {
+  protected reportMetric(metric: Metric, ctx: MetricSetReportContext<Metric>): Message {
     return this.options.metricMessageBuilder(ctx.registry, metric, ctx.type, ctx.date, this.buildTags(ctx.registry, metric));
   }
 
@@ -533,7 +396,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportCounter(counter: MonotoneCounter | Counter, ctx: MetricSetReportContext<MonotoneCounter | Counter>): Amqp.Message {
+  protected reportCounter(counter: MonotoneCounter | Counter, ctx: MetricSetReportContext<MonotoneCounter | Counter>): Message {
     return this.reportMetric(counter, ctx);
   }
 
@@ -546,7 +409,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportGauge(gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): Amqp.Message {
+  protected reportGauge(gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): Message {
     return this.reportMetric(gauge, ctx);
   }
 
@@ -559,7 +422,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportHistogram(histogram: Histogram, ctx: MetricSetReportContext<Histogram>): Amqp.Message {
+  protected reportHistogram(histogram: Histogram, ctx: MetricSetReportContext<Histogram>): Message {
     return this.reportMetric(histogram, ctx);
   }
 
@@ -572,7 +435,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportMeter(meter: Meter, ctx: MetricSetReportContext<Meter>): Amqp.Message {
+  protected reportMeter(meter: Meter, ctx: MetricSetReportContext<Meter>): Message {
     return this.reportMetric(meter, ctx);
   }
 
@@ -585,7 +448,7 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportTimer(timer: Timer, ctx: MetricSetReportContext<Timer>): Amqp.Message {
+  protected reportTimer(timer: Timer, ctx: MetricSetReportContext<Timer>): Message {
     return this.reportMetric(timer, ctx);
   }
 }
