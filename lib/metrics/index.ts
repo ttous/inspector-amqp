@@ -10,3 +10,4 @@ export * from "./IHistogramValue";
 export * from "./IMeterValue";
 export * from "./ITimerValue";
 export * from "./MetricMessageBuilder";
+export * from "./RoutingKeyDeterminator";
