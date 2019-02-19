@@ -29,7 +29,6 @@
   "dependencies": {
     "amqp-ts": "^1.4.0",
     "inspector-metrics": "^1.17.3",
-    "rimraf": "^2.6.3",
     "source-map-support": "^0.5.10"
   },
   "devDependencies": {
@@ -38,6 +37,7 @@
     "@types/node": "^11.9.3",
     "compodoc": "0.0.41",
     "npm-check": "^5.9.0",
+    "rimraf": "^2.6.3",
     "ts-node": "^8.0.2",
     "tslint": "^5.12.1",
     "typescript": "^3.3.3"
