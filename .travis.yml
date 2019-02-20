@@ -6,11 +6,12 @@ node_js:
   - 8
   - 7
   - 6
-jobs:  
-  include:
-    - stage: build
-      name: "Build"
-      script: npm run build
-    # - stage: test
-    #   name: "Tests"
-    #   script: npm run test
+script: npm run build
+# jobs:  
+#   include:
+#     - stage: build
+#       name: "Build"
+#       script: npm run build
+#     - stage: test
+#       name: "Tests"
+#       script: npm run test
