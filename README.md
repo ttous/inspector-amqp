@@ -10,7 +10,7 @@ Typescript [Metrics Reporter](https://github.com/rstiller/inspector-metrics/blob
         <img src="https://img.shields.io/npm/l/inspector-amqp.svg" alt="License">
     </a>
     <a href="https://travis-ci.org/rstiller/inspector-amqp">
-        <img src="http://img.shields.io/travis/rstiller/inspector-amqp/master.svg" alt="Build Status">
+        <img src="http://img.shields.io/travis/ttous/inspector-amqp/master.svg" alt="Build Status">
     </a>
 </p>
 
