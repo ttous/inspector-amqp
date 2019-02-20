@@ -2,6 +2,18 @@
 
 Typescript [Metrics Reporter](https://github.com/rstiller/inspector-metrics/blob/master/lib/metrics/reporter/metric-reporter.ts) for [AMQP](https://www.amqp.org/).
 
+<p align="center">
+    <a href="https://www.npmjs.org/package/inspector-amqp">
+        <img src="https://img.shields.io/npm/v/inspector-amqp.svg" alt="NPM Version">
+    </a>
+    <a href="https://www.npmjs.org/package/inspector-amqp">
+        <img src="https://img.shields.io/npm/l/inspector-amqp.svg" alt="License">
+    </a>
+    <a href="https://travis-ci.org/rstiller/inspector-amqp">
+        <img src="http://img.shields.io/travis/rstiller/inspector-amqp/master.svg" alt="Build Status">
+    </a>
+</p>
+
 This library is made for [inspector-metrics](https://github.com/rstiller/inspector-metrics) node module and is meant to be used with `typescript` / `nodejs`.
 
 It uses [amqp-ts](https://github.com/abreits/amqp-ts) as amqp client.
