@@ -434,12 +434,12 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * Calls {@link #reportMetric} with the specified arguments.
    *
    * @protected
-   * @param {Gauge<any>} gauge
-   * @param {ReportingContext<Gauge<any>>} ctx
+   * @param {Gauge<T>} gauge
+   * @param {ReportingContext<Gauge<T>>} ctx
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportGauge(gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): AmqpReportingResult {
+  protected reportGauge<T>(gauge: Gauge<T>, ctx: MetricSetReportContext<Gauge<T>>): AmqpReportingResult {
     return this.reportMetric(gauge, ctx);
   }
 
