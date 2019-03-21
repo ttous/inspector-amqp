@@ -3,6 +3,7 @@
         "allowJs": false,
         "alwaysStrict": true,
         "declaration": true,
+        "module": "none",
         "target": "es6",
         "sourceMap": true,
         "moduleResolution": "node",
