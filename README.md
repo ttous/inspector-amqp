@@ -29,26 +29,21 @@ It uses [amqp-ts](https://github.com/abreits/amqp-ts) as amqp client.
 
 ```typescript
 import { Event } from "inspector-metrics";
-import { AmqpMetricReporter } from "../metrics";
+import { AmqpMetricReporter, AmqpTopologyHelper } from "../metrics";
 
-// instance the Amqp reporter
+// Instantiate the AMQP reporter
 const reporter: AmqpMetricReporter = new AmqpMetricReporter({
-  connection: "amqp://localhost",
-  exchangeName: "exchange",
-  queueName: "queue",
+  amqpTopologyBuilder: AmqpTopologyHelper.queue("amqp://localhost", "queue"),
 });
 
-// start reporter
-reporter.start().then((r) => {
-  const event = new Event<{}>("test")
-    .setValue({
-      int: 123,
-      string: "toto",
-    });
-
-  // send event
-  r.reportEvent(event);
+// Create the event
+const event = new Event<{}>("test").setValue({
+  int: 123,
+  string: "toto",
 });
+
+// Report the event
+reporter.reportEvent(event);
 ```
 
 ## running rabbitmq locally (using docker)
