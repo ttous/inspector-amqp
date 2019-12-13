@@ -66,13 +66,13 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
       }
 
       if (!values) {
-        return null;
+        return Promise.resolve(null);
       }
 
       const name = metric.getName();
       const group = metric.getGroup();
 
-      return new Message(JSON.stringify({ name, group, timestamp, type, tags, values }));
+      return Promise.resolve(new Message(JSON.stringify({ name, group, timestamp, type, tags, values })));
     };
   }
 
@@ -385,10 +385,18 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * @returns {Promise<void>}
    * @memberof AmqpMetricReporter
    */
-  protected async handleResults(ctx: OverallReportContext, registry: MetricRegistry, date: Date, type: MetricType, results: Array<ReportingResult<any, AmqpReportingResult>>): Promise<void> {
-    results
-      .filter((result) => result.result && result.result.message)
-      .forEach((result) => result.result.message.sendTo(this.target, result.result.routingKey));
+  protected handleResults(ctx: OverallReportContext, registry: MetricRegistry, date: Date, type: MetricType, results: Array<ReportingResult<any, AmqpReportingResult>>): Promise<void> {
+    return Promise.all(
+      results
+        .map((result) => {
+          return Promise.all([result.result.message, result.result.routingKey])
+            .then((message) => {
+              if (message[0]) {
+                message[0].sendTo(this.target, message[1]);
+              }
+            });
+        }))
+      .then(() => { });
   }
 
   /**
@@ -426,12 +434,12 @@ export class AmqpMetricReporter extends ScheduledMetricReporter<AmqpMetricReport
    * Calls {@link #reportMetric} with the specified arguments.
    *
    * @protected
-   * @param {Gauge<any>} gauge
-   * @param {ReportingContext<Gauge<any>>} ctx
+   * @param {Gauge<T>} gauge
+   * @param {ReportingContext<Gauge<T>>} ctx
    * @returns {{}}
    * @memberof AmqpMetricReporter
    */
-  protected reportGauge(gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): AmqpReportingResult {
+  protected reportGauge<T>(gauge: Gauge<T>, ctx: MetricSetReportContext<Gauge<T>>): AmqpReportingResult {
     return this.reportMetric(gauge, ctx);
   }
 
